@@ -10,8 +10,11 @@ import { Loader2, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FormActions } from "src/components/add-paintings/actions";
 import ArtworkForm from "src/components/add-paintings/add-form";
 import PageHeader from "src/components/add-paintings/Header";
+import { FormHelp } from "src/components/add-paintings/help";
+import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
 import { useAutoSave } from "src/hooks/use-auto-save";
 import type { AdminHeaderProps } from "src/types/ui/AdminHeader";
@@ -101,17 +104,38 @@ export default function ImprovedAddPaintingsPage() {
       <div className="min-h-screen bg-gray-50/50">
         <div className="max-w-full mx-auto px-4 py-6">
           <PageHeader lastSaved={lastSaved ?? undefined} />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
             {/* Main Form */}
-            <ArtworkForm
-              categories={categories}
-              onSubmit={onSubmit}
-              isSubmitting={isSubmitting}
-              form={form}
-            />
+            <div className="lg:col-span-2 overflow-y-auto pr-4">
+              <ArtworkForm
+                categories={categories}
+                onSubmit={onSubmit}
+                isSubmitting={isSubmitting}
+                form={form}
+              />
+            </div>
 
             {/* Sidebar */}
-            
+            <div className="hidden lg:block lg:col-span-1">
+              <div className="sticky top-20 space-y-6">
+                <PreviewCard
+                  imageUrl={watchedValues.imageUrl}
+                  name={watchedValues.name}
+                  price={watchedValues.price}
+                  size={watchedValues.size}
+                  categories={selectedCategories}
+                />
+
+                <FormActions
+                  isSubmitting={isSubmitting}
+                  isDraft={isDraft}
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  saveDraft={saveDraft}
+                />
+
+                <FormHelp />
+              </div>
+            </div>
           </div>
         </div>
       </div>
