@@ -27,7 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { sidebarData } from "../../data/sidebar-menu"
+import { sidebarData } from "../../constant/sidebar-menu"
 
 const data = sidebarData;
 
