@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { Input } from "@/components/ui/input";
-import { formatCurrency } from "src/utils/format-currency";
+import { formatCurrency } from "src/utils/FormatCurrency";
 
 interface CurrencyInputProps {
   value: number;

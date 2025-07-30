@@ -16,10 +16,10 @@ import PageHeader from "src/components/add-paintings/Header";
 import { FormHelp } from "src/components/add-paintings/help";
 import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
-import { useAutoSave } from "src/hooks/use-auto-save";
+// import { useAutoSave } from "src/hooks/use-auto-save";
 import type { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import { formAddSchema, type FormAddData } from "src/types/ui/FormAdd";
-import { formatCurrency } from "src/utils/format-currency";
+import { formatCurrency } from "src/utils/FormatCurrency";
 
 const menuHeaders: AdminHeaderProps[] = [
   { label: "Quản lý tranh", href: "/paintings", isCurrent: false },
@@ -57,11 +57,11 @@ export default function ImprovedAddPaintingsPage() {
   const watchedValues = form.watch();
 
   // Auto-save functionality
-  useAutoSave(watchedValues, (data) => {
-    // Save to localStorage or API
-    localStorage.setItem("painting-draft", JSON.stringify(data));
-    setLastSaved(new Date());
-  });
+  // useAutoSave(watchedValues, (data) => {
+  //   // Save to localStorage or API
+  //   localStorage.setItem("painting-draft", JSON.stringify(data));
+  //   setLastSaved(new Date());
+  // });
 
   const onSubmit = async (values: FormAddData) => {
     setIsSubmitting(true);
@@ -116,8 +116,8 @@ export default function ImprovedAddPaintingsPage() {
             </div>
 
             {/* Sidebar */}
-            <div className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-20 space-y-6">
+            <div className="block lg:col-span-1">
+              <div className="sticky top-4 space-y-6">
                 <PreviewCard
                   imageUrl={watchedValues.imageUrl}
                   name={watchedValues.name}

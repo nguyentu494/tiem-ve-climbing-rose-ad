@@ -1,7 +1,7 @@
 // src/components/add-paintings/PreviewCard.tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "src/utils/format-currency";
+import { formatCurrency } from "src/utils/FormatCurrency";
 
 interface PreviewCardProps {
   imageUrl?: string;
