@@ -12,6 +12,8 @@ export type LoginResponse = z.infer<typeof LoginResponseSchema>;
 export const Login = async (
   values: z.infer<typeof LoginRequestSchema>
 ): Promise<LoginResponse> => {
+  localStorage.removeItem(LocalStorage.token);
+
   const response = await api.post("/auth/login", values);
 
   const parsed = LoginResponseSchema.parse(response.data);

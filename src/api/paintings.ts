@@ -19,17 +19,14 @@ export const AddPaintings = async (
     const formData = new FormData();
     formData.append("file", data.imageUrl);
 
-    console.log("Uploading image:", data.imageUrl);
-
-    console.log("Form data:", formData.get("file"));
-
     const responseImage = await api.post("/files/upload/image", formData, {
       headers: {
         "Content-Type": "multipart/form-data", // BẮT BUỘC
       },
     });
 
-    const imageUrl = responseImage.data.data.url;
+
+    const imageUrl = responseImage.data.data.secure_url;
 
     const response = await api.post("/paintings/create", {
       ...data,
@@ -45,7 +42,6 @@ export const AddPaintings = async (
 
 export const GetAllPaintings = async (params?: SearchingParams): Promise<PaintingsResponse> => {
   try {
-    console.log("Fetching paintings with params:", params)
     const response = await api.get("/paintings", {
       params,
       paramsSerializer: (params) => {

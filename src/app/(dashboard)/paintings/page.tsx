@@ -19,7 +19,8 @@ import { debounce } from "src/utils/Debounce";
 const menuHeaders: AdminHeaderProps[] = [
   {
     label: "Quản lý tranh",
-    href: "/paintings",
+    href: "/admin\
+    /paintings",
     isCurrent: true,
   },
 ];
@@ -56,8 +57,8 @@ export default function PaintingsPage() {
   );
 
   const handleKeywordChange = (value: string) => {
-    setKeyword(value); 
-    debouncedSetKeyword(value); 
+    setKeyword(value);
+    debouncedSetKeyword(value);
   };
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
@@ -98,7 +99,7 @@ export default function PaintingsPage() {
       keyword: "",
       categoryIds: [],
       sizes: [],
-      isActive: true  ,
+      isActive: true,
       sort: "",
       page: 1,
       size: 3,
@@ -117,13 +118,10 @@ export default function PaintingsPage() {
       .map((cat) => cat.name);
   };
 
-
-
   React.useEffect(() => {
     // Fetch data from API or any other source
     const fetchData = async () => {
       const response = await GetAllPaintings(searchingParams);
-      console.log("Fetched paintings data:", response);
 
       setData(response);
     };
@@ -156,7 +154,11 @@ export default function PaintingsPage() {
         <SearchPaintings
           searchParams={searchingParams}
           categories={categories}
-          availableSizes={[PaintingSize.SIZE_20x20, PaintingSize.SIZE_30x30, PaintingSize.SIZE_50x70]}
+          availableSizes={[
+            PaintingSize.SIZE_20x20,
+            PaintingSize.SIZE_30x30,
+            PaintingSize.SIZE_50x70,
+          ]}
           // sortOptions={sortOptions}
           activeFiltersCount={activeFiltersCount}
           keyword={keyword}

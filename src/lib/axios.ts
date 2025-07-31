@@ -68,7 +68,6 @@ api.interceptors.response.use(
 			// 	description: "Vui lòng đăng nhập lại",
 			// 	color: "danger",
 			// });
-			localStorage.removeItem(LocalStorage.ipDevice);
 			localStorage.removeItem(LocalStorage.userId);
 			window.location.href = "/login";
 		}
