@@ -1,6 +1,7 @@
 import { FormAddPaintings, FormAddPaintingsSchema } from './../types/ui/FormAddPaintings';
 import { api } from "src/lib/axios";
 import { AddPaintingsRequest, AddPaintingsSchema } from "src/types/request/AddPaintingsRequest";
+import { SearchingParams } from 'src/types/request/SearchParams';
 import { BaseResponseSchema } from "src/types/response/BaseResponse";
 import { AddPaintingsResponseSchema } from 'src/types/response/PaintingsRespose';
 import z from "zod";
@@ -38,7 +39,7 @@ export const AddPaintings = async (data: FormAddPaintings): Promise<AddPaintings
     }
 };
 
-export const GetAllPaintings = async (params?: Record<string, any>) => {
+export const GetAllPaintings = async (params?: SearchingParams) => {
   try {
     const response = await api.get("/paintings", {
       params

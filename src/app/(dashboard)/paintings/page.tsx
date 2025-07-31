@@ -9,6 +9,7 @@ import { columns } from "src/components/paintings/columns";
 import { DataTable } from "src/components/paintings/data-table";
 import { AddPaintingsResponse } from "src/types/response/PaintingsRespose";
 import { GetAllPaintings } from "src/api/paintings";
+import { SearchingParams } from "src/types/request/SearchParams";
 
 const menuHeaders: AdminHeaderProps[] = [
   {
@@ -22,12 +23,19 @@ const menuHeaders: AdminHeaderProps[] = [
 
 export default function PaintingsPage() {
   const router = useRouter();
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(3);
+
+  const [searchingParams, setSearchingParams] = React.useState<SearchingParams>({
+    page,
+    size: pageSize
+  });
 
   const [data, setData] = React.useState<AddPaintingsResponse[]>([]);
   React.useEffect(() => {
     // Fetch data from API or any other source
     const fetchData = async () => {
-      const response = await GetAllPaintings();
+      const response = await GetAllPaintings(searchingParams);
       const result = await response.data.items;
       console.log(response)
       setData(result);

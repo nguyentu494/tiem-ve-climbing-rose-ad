@@ -74,20 +74,7 @@ export const columns: ColumnDef<AddPaintingsResponse>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  {
-    accessorKey: "imageUrl",
-    header: () => <div className="text-right">Hình ảnh</div>,
-    cell: ({ row }) => {
-      const imageUrl = row.getValue("imageUrl");
-      return (
-        <div className="text-right">
-          {typeof imageUrl === "string" && (
-            <Image src={imageUrl} alt="Ảnh" width={500} height={500} />
-          )}
-        </div>
-      );
-    },
-  },
+  
   {
     id: "actions",
     cell: ({ row }) => {
