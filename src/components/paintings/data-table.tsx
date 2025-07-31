@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import CardRow from "./card-row";
-import { AddPaintingsResponse } from "src/types/response/PaintingsRespose";
+import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,6 +44,8 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
+
+  console.log(data)
 
   const table = useReactTable({
     data,
@@ -159,7 +161,7 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
           )}
         </div>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -176,11 +178,8 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
         >
           Next
         </Button>
-        <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-      </div>
+        
+      </div> */}
     </div>
   );
 }

@@ -3,10 +3,17 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Checkbox } from "../ui/checkbox";
 import Image from "next/image";
-import { AddPaintingsResponse } from "src/types/response/PaintingsRespose";
+import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -74,7 +81,7 @@ export const columns: ColumnDef<AddPaintingsResponse>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  
+
   {
     id: "actions",
     cell: ({ row }) => {

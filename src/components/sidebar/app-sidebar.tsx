@@ -29,6 +29,12 @@ import {
 } from "@/components/ui/sidebar"
 import { sidebarData } from "../../constant/sidebar-menu"
 
+type MyData = {
+  user: { name: string; email: string; avatar: string };
+  navMain: { title: string; url: string; icon: any; isActive: boolean }[];
+  projects: { id: string; name: string }[]; // ✅ THÊM DÒNG NÀY
+};
+
 const data = sidebarData;
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -53,8 +59,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavProjects projects={data.projects} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

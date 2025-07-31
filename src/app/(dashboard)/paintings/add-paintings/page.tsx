@@ -13,7 +13,6 @@ import { FormHelp } from "src/components/add-paintings/help";
 import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
 import { PaintingSize } from "src/enums/paintings-size.enum";
-import { AddPaintingsRequest, AddPaintingsSchema } from "src/types/request/AddPaintingsRequest";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import { FormAddPaintings, FormAddPaintingsSchema } from "src/types/ui/FormAddPaintings";

@@ -1,8 +1,8 @@
 // src/components/add-paintings/FormActions.tsx
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Save } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
 interface FormActionsProps {

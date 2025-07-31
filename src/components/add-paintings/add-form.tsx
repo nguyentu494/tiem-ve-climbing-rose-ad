@@ -5,14 +5,18 @@ import ImageUploadSection from "./image-upload";
 import SpecificationsSection from "./specifications";
 import CategoriesSection from "./catgories";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { AddPaintingsRequest } from "src/types/request/AddPaintingsRequest";
+import { UseFormReturn } from "react-hook-form";
+import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
+import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
 
 
 
 interface ArtworkFormProps {
-  onSubmit: (values: any) => void;
+  onSubmit: (values: FormAddPaintings) => void;
   isSubmitting: boolean;
   categories: CategoryResponse[];
-  form: any;
+  form: UseFormReturn<FormAddPaintings>;
 }
 
 export default function ArtworkForm({

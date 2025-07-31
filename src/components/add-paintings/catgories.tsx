@@ -2,6 +2,8 @@ import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
+import { UseFormReturn } from "react-hook-form";
 
 
 
@@ -10,7 +12,7 @@ export default function CategoriesSection({
   form,
   categories,
 }: {
-  form: any;
+  form: UseFormReturn<FormAddPaintings>;
   categories: CategoryResponse[];
 }) {
   return (

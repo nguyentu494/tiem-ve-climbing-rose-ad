@@ -12,12 +12,14 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { ImageUpload } from "../ui/image-upload";
+import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
+import { UseFormReturn } from "react-hook-form";
 
 export default function ImageUploadSection({
   form,
   isSubmitting,
 }: {
-  form: any;
+  form: UseFormReturn<FormAddPaintings>;
   isSubmitting: boolean;
 }) {
   return (

@@ -16,8 +16,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { UseFormReturn } from "react-hook-form";
+import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
 
-export default function BasicInfoSection({ form }: { form: any }) {
+export default function BasicInfoSection({ form }: { form: UseFormReturn<FormAddPaintings> }) {
   return (
     <Card>
       <CardHeader>
