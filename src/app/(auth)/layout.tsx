@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "@/styles/globals.css";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { PageTransitionWrapper } from "./transition-wrapper";
+import { PageTransitionWrapper } from "../transition-wrapper";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -21,12 +21,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <PageTransitionWrapper>{children}</PageTransitionWrapper>
-            </SidebarInset>
-          </SidebarProvider>
+          <PageTransitionWrapper>{children}</PageTransitionWrapper>
         </ThemeProvider>
       </body>
     </html>

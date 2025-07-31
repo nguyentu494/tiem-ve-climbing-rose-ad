@@ -1,21 +1,32 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useCallback } from "react";
+import { useCallback, useMemo, useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface ImageUploadProps {
-  value?: string;
-  onChange: (value: string) => void;
+  value?: File;
+  onChange: (value?: File) => void;
   disabled?: boolean;
 }
 
 export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [objectURL, setObjectURL] = useState<string | null>(null);
+
+  // Generate preview URL when value changes
+  useEffect(() => {
+    if (value instanceof File) {
+      const url = URL.createObjectURL(value);
+      setObjectURL(url);
+
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setObjectURL(null);
+    }
+  }, [value]);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -32,7 +43,6 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
       e.preventDefault();
       e.stopPropagation();
       setDragActive(false);
-
       if (disabled) return;
 
       const files = Array.from(e.dataTransfer.files);
@@ -45,16 +55,9 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
 
   const handleFileUpload = async (file: File) => {
     if (!file.type.startsWith("image/")) return;
-
     setIsUploading(true);
-
-    // Simulate upload - replace with actual upload logic
-    const reader = new FileReader();
-    reader.onload = () => {
-      onChange(reader.result as string);
-      setIsUploading(false);
-    };
-    reader.readAsDataURL(file);
+    onChange(file);
+    setIsUploading(false);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +73,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
         <div className="relative group">
           <div className="relative aspect-video w-full max-w-md mx-auto overflow-hidden rounded-lg border">
             <img
-              src={value || "/placeholder.svg"}
+              src={objectURL || "/placeholder.svg"}
               alt="Preview"
               className="w-full h-full object-cover"
             />
@@ -79,7 +82,7 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
                 type="button"
                 variant="destructive"
                 size="sm"
-                onClick={() => onChange("")}
+                onClick={() => onChange(undefined)}
                 disabled={disabled}
               >
                 <X className="w-4 h-4 mr-2" />

@@ -4,16 +4,14 @@ import BasicInfoSection from "./basic-info";
 import ImageUploadSection from "./image-upload";
 import SpecificationsSection from "./specifications";
 import CategoriesSection from "./catgories";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
 
-interface Category {
-  id: string;
-  name: string;
-}
+
 
 interface ArtworkFormProps {
   onSubmit: (values: any) => void;
   isSubmitting: boolean;
-  categories: Category[];
+  categories: CategoryResponse[];
   form: any;
 }
 

@@ -44,7 +44,7 @@ export function FormActions({
             )}
           </Button>
 
-          <Button
+          {/* <Button
             type="button"
             variant="outline"
             onClick={saveDraft}
@@ -59,7 +59,7 @@ export function FormActions({
             ) : (
               "Lưu nháp"
             )}
-          </Button>
+          </Button> */}
 
           <Separator />
 

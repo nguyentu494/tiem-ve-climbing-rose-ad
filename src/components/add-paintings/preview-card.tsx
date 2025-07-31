@@ -2,13 +2,15 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "src/utils/FormatCurrency";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { useEffect, useState } from "react";
 
 interface PreviewCardProps {
-  imageUrl?: string;
+  imageUrl?: string | File;
   name?: string;
   price?: number;
   size?: string;
-  categories: { id: string; name: string }[];
+  categories: CategoryResponse[];
 }
 
 export function PreviewCard({
@@ -18,16 +20,35 @@ export function PreviewCard({
   size,
   categories,
 }: PreviewCardProps) {
+    const [previewSrc, setPreviewSrc] = useState<string>();
+
+    useEffect(() => {
+      if (!imageUrl) {
+        setPreviewSrc(undefined);
+        return;
+      }
+
+      if (typeof imageUrl === "string") {
+        setPreviewSrc(imageUrl);
+      } else {
+        const url = URL.createObjectURL(imageUrl);
+        setPreviewSrc(url);
+        return () => URL.revokeObjectURL(url);
+      }
+    }, [imageUrl]);
+
+
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Xem trước</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {imageUrl && (
+        {previewSrc && (
           <div className="aspect-square rounded-lg overflow-hidden bg-muted">
             <img
-              src={imageUrl || "/placeholder.svg"}
+              src={previewSrc || "/placeholder.svg"}
               alt="Preview"
               className="w-full h-full object-cover"
             />
@@ -37,7 +58,7 @@ export function PreviewCard({
           <h3 className="font-semibold text-lg">{name || "Tên tranh"}</h3>
           {price && price > 0 && (
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(price)} VNĐ
+              {formatCurrency(price)} ¥
             </p>
           )}
           {size && (
@@ -47,7 +68,7 @@ export function PreviewCard({
             <div className="flex flex-wrap gap-1">
               {categories.map((category) => (
                 <Badge
-                  key={category.id}
+                  key={category.categoryId}
                   variant="secondary"
                   className="text-xs"
                 >

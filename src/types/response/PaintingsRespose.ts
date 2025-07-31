@@ -1,7 +1,8 @@
 import { PaintingSize } from "src/enums/paintings-size.enum";
 import { z } from "zod";
 
-export const AddPaintingsSchema = z.object({
+export const AddPaintingsResponseSchema = z.object({
+  paintingId: z.string(),
   name: z.string().min(1, "Tên không được để trống"),
   description: z.string(),
   imageUrl: z.string().url("URL hình ảnh không hợp lệ"),
@@ -11,4 +12,4 @@ export const AddPaintingsSchema = z.object({
   categoryIds: z.array(z.string()).min(1, "Phải chọn ít nhất 1 danh mục"),
 });
 
-export type AddPaintingsRequest = z.infer<typeof AddPaintingsSchema>;
+export type AddPaintingsResponse = z.infer<typeof AddPaintingsResponseSchema>;

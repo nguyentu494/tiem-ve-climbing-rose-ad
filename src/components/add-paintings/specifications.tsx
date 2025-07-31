@@ -77,7 +77,7 @@ export default function SpecificationsSection({
                 <FormControl>
                   <Input
                     type="number"
-                    min="0"
+                    
                     placeholder="0"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}

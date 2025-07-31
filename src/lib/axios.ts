@@ -50,7 +50,7 @@ api.interceptors.request.use(
 	(error) => Promise.reject(error),
 );
 
-// Interceptor xử lý lỗi
+// // Interceptor xử lý lỗi
 api.interceptors.response.use(
 	(response) => response,
 	(error) => {
@@ -69,7 +69,6 @@ api.interceptors.response.use(
 			// 	color: "danger",
 			// });
 			localStorage.removeItem(LocalStorage.ipDevice);
-			localStorage.removeItem(LocalStorage.token);
 			localStorage.removeItem(LocalStorage.userId);
 			window.location.href = "/login";
 		}

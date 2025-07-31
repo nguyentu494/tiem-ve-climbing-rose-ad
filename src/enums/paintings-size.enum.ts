@@ -1,0 +1,5 @@
+export enum PaintingSize {
+  SIZE_20x20 = "SIZE_20x20",
+  SIZE_30x30 = "SIZE_30x30",
+  SIZE_50x70 = "SIZE_50x70",
+}

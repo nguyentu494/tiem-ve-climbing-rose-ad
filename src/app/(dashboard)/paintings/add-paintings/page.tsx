@@ -1,53 +1,55 @@
 "use client";
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { GetAllCategories } from "src/api/category";
+import { AddPaintings } from "src/api/paintings";
 import { FormActions } from "src/components/add-paintings/actions";
 import ArtworkForm from "src/components/add-paintings/add-form";
 import PageHeader from "src/components/add-paintings/Header";
 import { FormHelp } from "src/components/add-paintings/help";
 import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
-// import { useAutoSave } from "src/hooks/use-auto-save";
-import type { AdminHeaderProps } from "src/types/ui/AdminHeader";
-import { formAddSchema, type FormAddData } from "src/types/ui/FormAdd";
-import { formatCurrency } from "src/utils/FormatCurrency";
+import { PaintingSize } from "src/enums/paintings-size.enum";
+import { AddPaintingsRequest, AddPaintingsSchema } from "src/types/request/AddPaintingsRequest";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { AdminHeaderProps } from "src/types/ui/AdminHeader";
+import { FormAddPaintings, FormAddPaintingsSchema } from "src/types/ui/FormAddPaintings";
 
 const menuHeaders: AdminHeaderProps[] = [
   { label: "Quản lý tranh", href: "/paintings", isCurrent: false },
   { label: "Thêm mới", href: "/paintings/add-paintings", isCurrent: true },
 ];
 
-const categories = [
-  { id: "1", name: "Tranh sơn dầu", color: "bg-blue-100 text-blue-800" },
-  { id: "2", name: "Tranh acrylic", color: "bg-green-100 text-green-800" },
-  { id: "3", name: "Tranh màu nước", color: "bg-purple-100 text-purple-800" },
-  { id: "4", name: "Tranh phong cảnh", color: "bg-orange-100 text-orange-800" },
-  { id: "5", name: "Tranh chân dung", color: "bg-pink-100 text-pink-800" },
-  { id: "6", name: "Tranh trừu tượng", color: "bg-indigo-100 text-indigo-800" },
-];
-
 export default function ImprovedAddPaintingsPage() {
   const router = useRouter();
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
-  const form = useForm<FormAddData>({
-    resolver: zodResolver(formAddSchema),
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await GetAllCategories();
+        setCategories(response);
+      }
+      catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const form = useForm<FormAddPaintings>({
+    resolver: zodResolver(FormAddPaintingsSchema),
     defaultValues: {
       name: "",
       description: "",
-      imageUrl: "",
-      size: "",
+      imageUrl: undefined,
+      size: PaintingSize.SIZE_20x20,
       price: 0,
       quantity: 0,
       categoryIds: [],
@@ -55,26 +57,18 @@ export default function ImprovedAddPaintingsPage() {
   });
 
   const watchedValues = form.watch();
+  
 
-  // Auto-save functionality
-  // useAutoSave(watchedValues, (data) => {
-  //   // Save to localStorage or API
-  //   localStorage.setItem("painting-draft", JSON.stringify(data));
-  //   setLastSaved(new Date());
-  // });
-
-  const onSubmit = async (values: FormAddData) => {
+  const onSubmit = async (values: FormAddPaintings) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Form submitted:", values);
+      const response = await AddPaintings(values);
+      if(response.statusCode === 200) {
+        form.reset();
+      } else {
+        console.error("Failed to add painting:", response.message);
+      }
 
-      // Clear draft
-      localStorage.removeItem("painting-draft");
-
-      // Redirect to success page or paintings list
-      router.push("/paintings?success=true");
     } catch (error) {
       console.error("Submit error:", error);
     } finally {
@@ -83,18 +77,18 @@ export default function ImprovedAddPaintingsPage() {
   };
 
   const saveDraft = async () => {
-    setIsDraft(true);
-    try {
-      const values = form.getValues();
-      localStorage.setItem("painting-draft", JSON.stringify(values));
-      setLastSaved(new Date());
-    } finally {
-      setIsDraft(false);
-    }
+    // setIsDraft(true);
+    // try {
+    //   const values = form.getValues();
+    //   localStorage.setItem("painting-draft", JSON.stringify(values));
+    //   setLastSaved(new Date());
+    // } finally {
+    //   setIsDraft(false);
+    // }
   };
 
   const selectedCategories = categories.filter((cat) =>
-    watchedValues.categoryIds?.includes(cat.id)
+    watchedValues.categoryIds?.includes(cat.categoryId)
   );
 
   return (
