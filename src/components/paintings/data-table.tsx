@@ -32,19 +32,21 @@ import {
 } from "../ui/dropdown-menu";
 import CardRow from "./card-row";
 import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  categories?: CategoryResponse[];
 }
 
 export function DataTable<TData extends AddPaintingsResponse, TValue>({
   columns,
   data,
+  categories,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
-
 
   const table = useReactTable({
     data,
@@ -151,9 +153,9 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
         <div>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-                <div key={row.id} className="border-b p-4">
-                  <CardRow row={row} />
-                </div>
+              <div key={row.id} className="border-b p-4">
+                <CardRow row={row} categories={categories ?? []} />
+              </div>
             ))
           ) : (
             <>No results.</>

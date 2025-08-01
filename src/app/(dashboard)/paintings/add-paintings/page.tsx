@@ -15,7 +15,10 @@ import { AdminHeader } from "src/components/layout/admin-header";
 import { PaintingSize } from "src/enums/paintings-size.enum";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
-import { FormAddPaintings, FormAddPaintingsSchema } from "src/types/ui/FormAddPaintings";
+import {
+  FormAddPaintings,
+  FormAddPaintingsSchema,
+} from "src/types/ui/FormAddPaintings";
 
 const menuHeaders: AdminHeaderProps[] = [
   { label: "Quản lý tranh", href: "/paintings", isCurrent: false },
@@ -34,11 +37,10 @@ export default function ImprovedAddPaintingsPage() {
       try {
         const response = await GetAllCategories();
         setCategories(response);
-      }
-      catch (error) {
+      } catch (error) {
         console.error("Failed to fetch categories:", error);
       }
-    }
+    };
     fetchCategories();
   }, []);
 
@@ -49,26 +51,24 @@ export default function ImprovedAddPaintingsPage() {
       description: "",
       imageUrl: undefined,
       size: PaintingSize.SIZE_20x20,
-      price: 0,
-      quantity: 0,
+      price: 700,
+      quantity: 10,
       categoryIds: [],
     },
   });
 
   const watchedValues = form.watch();
-  
 
   const onSubmit = async (values: FormAddPaintings) => {
     setIsSubmitting(true);
     try {
       const response = await AddPaintings(values);
-      if(response.statusCode === 200) {
+      if (response.statusCode === 200) {
         console.log("Painting added successfully:", response.data);
         form.reset();
       } else {
         console.error("Failed to add painting:", response.message);
       }
-
     } catch (error) {
       console.error("Submit error:", error);
     } finally {

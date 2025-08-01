@@ -67,7 +67,8 @@ api.interceptors.response.use(
       // 	color: "danger",
       // });
       localStorage.removeItem(LocalStorage.userId);
-      window.location.href = "/login";
+      localStorage.removeItem(LocalStorage.token);
+      window.location.href = "/admin/login";
     }
 
     return Promise.reject(errorResponse);

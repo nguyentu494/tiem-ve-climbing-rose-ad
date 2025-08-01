@@ -14,14 +14,74 @@ import {
 } from "../ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
+import { Sheet, SheetTrigger } from "../ui/sheet";
+import DetailPaintings from "./painting-detail";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { useForm, UseFormReturn } from "react-hook-form";
+import {
+  FormAddPaintings,
+  FormAddPaintingsSchema,
+} from "src/types/ui/FormAddPaintings";
+import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PaintingSize } from "src/enums/paintings-size.enum";
+import { AddPaintings } from "src/api/paintings";
+import { usePaintingDetail } from "src/hooks/usePaintingDetail";
 
 type CardRowProps = {
   row: Row<AddPaintingsResponse>;
+  categories: CategoryResponse[];
 };
 
-export default function CardRow({ row }: CardRowProps) {
+export default function CardRow({ row, categories }: CardRowProps) {
   const data = row.original;
+  const { setPainting, clear } = usePaintingDetail();
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const form = useForm<FormAddPaintings>({
+    resolver: zodResolver(FormAddPaintingsSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      imageUrl: undefined,
+      size: PaintingSize.SIZE_20x20,
+      price: 0,
+      quantity: 0,
+      categoryIds: [],
+    },
+  });
+
+  const handleRowClick = (values: AddPaintingsResponse) => {
+    setPainting(values);
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+
+    if (!open) {
+      clear();
+      form.reset();
+    }
+  };
+
+  const onSubmit = async (values: FormAddPaintings) => {
+    setIsSubmitting(true);
+    try {
+      const response = await AddPaintings(values);
+      if (response.statusCode === 200) {
+        console.log("Painting added successfully:", response.data);
+        form.reset();
+      } else {
+        console.error("Failed to add painting:", response.message);
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -64,7 +124,11 @@ export default function CardRow({ row }: CardRowProps) {
             </Badge>
             {data.categories?.length > 0 ? (
               data.categories.map((catId) => (
-                <Badge key={catId.categoryId} variant="default" className="text-xs">
+                <Badge
+                  key={catId.categoryId}
+                  variant="default"
+                  className="text-xs"
+                >
                   {catId.name}
                 </Badge>
               ))
@@ -84,7 +148,23 @@ export default function CardRow({ row }: CardRowProps) {
               })}
             </span>
             <div className="flex items-center">
-              <Button size="sm">Chi tiết</Button>
+              <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleRowClick(data)}
+                  >
+                    Xem chi tiết
+                  </Button>
+                </SheetTrigger>
+                <DetailPaintings
+                  categories={categories}
+                  isSubmitting={isSubmitting}
+                  form={form}
+                  onSubmit={onSubmit}
+                />
+              </Sheet>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="h-7 w-7 p-0 ml-1">

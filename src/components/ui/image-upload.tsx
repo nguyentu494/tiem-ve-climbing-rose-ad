@@ -4,9 +4,10 @@ import { useCallback, useMemo, useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { string } from "zod";
 
 interface ImageUploadProps {
-  value?: File;
+  value?: File | string;
   onChange: (value?: File) => void;
   disabled?: boolean;
 }
@@ -21,9 +22,14 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
     if (value instanceof File) {
       const url = URL.createObjectURL(value);
       setObjectURL(url);
-
       return () => URL.revokeObjectURL(url);
-    } else {
+    }
+
+    if (typeof value === "string") {
+      setObjectURL(value);
+    }
+
+    if (!value) {
       setObjectURL(null);
     }
   }, [value]);

@@ -18,7 +18,6 @@ export const AddPaintings = async (
   try {
     const formData = new FormData();
     formData.append("file", data.imageUrl);
-    console.log(data, "FormData");
 
     const responseImage = await api.post("/files/upload/image", formData, {
       headers: {

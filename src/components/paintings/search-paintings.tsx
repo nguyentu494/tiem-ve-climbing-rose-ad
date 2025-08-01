@@ -1,6 +1,5 @@
 "use client";
 
-
 import { ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import { Input } from "../ui/input";
@@ -10,8 +9,21 @@ import { Separator } from "../ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
 import { SearchingParams } from "src/types/request/SearchParams";

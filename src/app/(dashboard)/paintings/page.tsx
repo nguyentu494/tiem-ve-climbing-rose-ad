@@ -176,7 +176,7 @@ export default function PaintingsPage() {
           setSearchParams={setSearchingParams}
         />
 
-        <DataTable columns={columns} data={data?.items || []} />
+        <DataTable columns={columns} data={data?.items || []} categories={categories} />
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
             variant="outline"
