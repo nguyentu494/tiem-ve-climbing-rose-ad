@@ -45,7 +45,6 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
 
-  console.log(data)
 
   const table = useReactTable({
     data,

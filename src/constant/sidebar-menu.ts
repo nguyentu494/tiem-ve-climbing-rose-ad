@@ -20,7 +20,7 @@ export const sidebarData = {
   navMain: [
     {
       title: "Quản lý tranh",
-      url: "/paintings",
+      url: "/admin/paintings",
       icon: SquareTerminal,
       isActive: true,
       // items: [

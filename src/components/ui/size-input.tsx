@@ -42,7 +42,7 @@ export function SizeInput({ value, onChange, disabled }: SizeInputProps) {
         <SelectContent>
           {paintingSizes.map((size) => (
             <SelectItem key={size} value={size}>
-              {size.replace("SIZE_", "").replace("x", "x")}
+              {size !== PaintingSize.ART_SUPPLIES ? size.replace("SIZE_", "").replace("x", "x") : "Bộ dụng cụ"}
             </SelectItem>
           ))}
         </SelectContent>

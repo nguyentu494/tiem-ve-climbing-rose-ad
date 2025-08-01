@@ -18,6 +18,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Login, LoginResponse } from "src/api/auth";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Lottie from "lottie-react";
+import loadingAnimation from "../../../public/animation/loading-component.json";
 
 
 
@@ -27,8 +30,11 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async (values: z.infer<typeof LoginRequestSchema>) => {
     // Handle login logic here
+    setIsLoading(true);
     const response: LoginResponse = await Login(values);
 
     if (response.statusCode === 200) {
@@ -51,6 +57,12 @@ export function LoginForm({
   
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm flex items-center justify-center flex-col gap-4">
+          <Lottie animationData={loadingAnimation} loop size={12} />
+          <p className="text-sm text-primary">Đang đăng nhập...</p>
+        </div>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -69,7 +81,11 @@ export function LoginForm({
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input placeholder="user" {...field} autoComplete="username" />
+                        <Input
+                          placeholder="user"
+                          {...field}
+                          autoComplete="username"
+                        />
                       </FormControl>
                       <FormDescription>
                         This is your public display name.
@@ -85,7 +101,12 @@ export function LoginForm({
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="••••••••" {...field} autoComplete="current-password" />
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
+                          autoComplete="current-password"
+                        />
                       </FormControl>
                       <FormDescription>
                         This is your account password.
@@ -95,13 +116,11 @@ export function LoginForm({
                   )}
                 />
                 <div className="flex flex-col gap-3">
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full" disabled={isLoading}>
                     Login
                   </Button>
-                  
                 </div>
               </div>
-              
             </form>
           </Form>
         </CardContent>

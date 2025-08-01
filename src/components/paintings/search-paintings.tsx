@@ -60,8 +60,6 @@ export default function SearchPaintings({
 }: ProductFilterBarProps) {
   return (
     <div>
-      
-
       <Card className="p-4">
         <div className="flex flex-wrap items-center gap-4">
           {/* Keyword */}
@@ -208,7 +206,7 @@ export default function SearchPaintings({
           <Separator orientation="vertical" className="h-6" />
 
           {/* Sort */}
-          {/* <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Label className="text-sm font-medium whitespace-nowrap">
               Sắp xếp:
             </Label>
@@ -217,14 +215,15 @@ export default function SearchPaintings({
                 <SelectValue placeholder="Chọn" />
               </SelectTrigger>
               <SelectContent>
-                {sortOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
+                {sortOptions &&
+                  sortOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
-          </div> */}
+          </div>
 
           {/* Mobile Filter */}
           <div className="lg:hidden ml-auto">
@@ -343,52 +342,56 @@ export default function SearchPaintings({
             Bộ lọc đang áp dụng:
           </span>
           {getSelectedCategoryNames().map((name) => (
-            <Badge key={name} variant="secondary" className="gap-1">
+            <Badge
+              key={name}
+              variant="secondary"
+              className="gap-1 cursor-pointer"
+              onClick={() => {
+                const category = categories.find((c) => c.name === name);
+                if (category) handleCategoryChange(category.categoryId, false);
+              }}
+            >
               {name}
-              <X
-                className="h-3 w-3 cursor-pointer"
-                onClick={() => {
-                  const category = categories.find((c) => c.name === name);
-                  if (category)
-                    handleCategoryChange(category.categoryId, false);
-                }}
-              />
+              <X className="h-3 w-3" />
             </Badge>
           ))}
           {searchParams.sizes &&
             searchParams.sizes.map((size) => (
-              <Badge key={size} variant="secondary" className="gap-1">
+              <Badge
+                key={size}
+                variant="secondary"
+                className="gap-1 cursor-pointer"
+                onClick={() => handleSizeChange(size, false)}
+              >
                 Size {size}
-                <X
-                  className="h-3 w-3 cursor-pointer"
-                  onClick={() => handleSizeChange(size, false)}
-                />
+                <X className="h-3 w-3" />
               </Badge>
             ))}
           {searchParams.isActive !== undefined && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge
+              variant="secondary"
+              className="gap-1 cursor-pointer"
+              onClick={() =>
+                setSearchParams((prev: any) => ({
+                  ...prev,
+                  isActive: undefined,
+                }))
+              }
+            >
               Đang bán
-              <X
-                className="h-3 w-3 cursor-pointer"
-                onClick={() =>
-                  setSearchParams((prev: any) => ({
-                    ...prev,
-                    isActive: undefined,
-                  }))
-                }
-              />
+              <X className="h-3 w-3" />
             </Badge>
           )}
           {searchParams.sort && (
-            <Badge variant="secondary" className="gap-1">
-              {/* {
+            <Badge
+              variant="secondary"
+              className="gap-1 cursor-pointer"
+              onClick={() => handleSortChange("")}
+            >
+              {sortOptions &&
                 sortOptions.find((opt) => opt.value === searchParams.sort)
-                  ?.label
-              } */}
-              <X
-                className="h-3 w-3 cursor-pointer"
-                onClick={() => handleSortChange("")}
-              />
+                  ?.label}
+              <X className="h-3 w-3" />
             </Badge>
           )}
         </div>

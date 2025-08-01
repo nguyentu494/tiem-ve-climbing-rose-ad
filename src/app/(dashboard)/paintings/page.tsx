@@ -8,6 +8,7 @@ import { columns } from "src/components/paintings/columns";
 import { DataTable } from "src/components/paintings/data-table";
 import SearchPaintings from "src/components/paintings/search-paintings";
 import { Button } from "src/components/ui/button";
+import { sortOptions } from "src/constant/sort-options";
 import { PaintingSize } from "src/enums/paintings-size.enum";
 import { api } from "src/lib/axios";
 import { SearchingParams } from "src/types/request/SearchParams";
@@ -19,8 +20,7 @@ import { debounce } from "src/utils/Debounce";
 const menuHeaders: AdminHeaderProps[] = [
   {
     label: "Quản lý tranh",
-    href: "/admin\
-    /paintings",
+    href: "/admin/paintings",
     isCurrent: true,
   },
 ];
@@ -156,10 +156,11 @@ export default function PaintingsPage() {
           categories={categories}
           availableSizes={[
             PaintingSize.SIZE_20x20,
-            PaintingSize.SIZE_30x30,
-            PaintingSize.SIZE_50x70,
+            PaintingSize.SIZE_30x40,
+            PaintingSize.SIZE_40x50,
+            PaintingSize.ART_SUPPLIES,
           ]}
-          // sortOptions={sortOptions}
+          sortOptions={sortOptions}
           activeFiltersCount={activeFiltersCount}
           keyword={keyword}
           isFilterOpen={isFilterOpen}

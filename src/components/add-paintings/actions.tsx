@@ -66,7 +66,7 @@ export function FormActions({
           <Button
             type="button"
             variant="ghost"
-            onClick={() => router.push("/paintings")}
+            onClick={() => router.push("/admin/paintings")}
             className="w-full"
           >
             Hủy bỏ

@@ -5,9 +5,11 @@ import "@/styles/globals.css";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { PageTransitionWrapper } from "../transition-wrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LocalStorage } from "src/lib/local-storage";
+import Lottie from "lottie-react";
+import loadingAnimation from "../../../public/animation/loading-page.json";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -15,12 +17,15 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(false);
     const token = localStorage.getItem(LocalStorage.token);
     if (!token) {
       router.replace("/login");
     }
+    setIsLoading(true);
   }, [router]);
 
   return (
@@ -33,12 +38,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <PageTransitionWrapper>{children}</PageTransitionWrapper>
-            </SidebarInset>
-          </SidebarProvider>
+          {isLoading === false ? (
+            <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm flex items-center justify-center flex-col gap-4">
+              <Lottie animationData={loadingAnimation} loop size={12} />
+              <p className="text-sm text-primary">Đang tải...</p>
+            </div>
+          ) : (
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <PageTransitionWrapper>{children}</PageTransitionWrapper>
+              </SidebarInset>
+            </SidebarProvider>
+          )}
         </ThemeProvider>
       </body>
     </html>

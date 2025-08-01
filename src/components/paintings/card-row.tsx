@@ -22,6 +22,7 @@ type CardRowProps = {
 export default function CardRow({ row }: CardRowProps) {
   const data = row.original;
 
+
   return (
     <div className="flex items-center justify-between">
       <div className="shrink-0 mr-4">
@@ -61,10 +62,10 @@ export default function CardRow({ row }: CardRowProps) {
             <Badge variant="secondary" className="text-xs">
               Số lượng: {data.quantity}
             </Badge>
-            {data.categoryIds?.length ? (
-              data.categoryIds.map((catId) => (
-                <Badge key={catId} variant="default" className="text-xs">
-                  {catId}
+            {data.categories?.length > 0 ? (
+              data.categories.map((catId) => (
+                <Badge key={catId.categoryId} variant="default" className="text-xs">
+                  {catId.name}
                 </Badge>
               ))
             ) : (

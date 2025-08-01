@@ -63,6 +63,7 @@ export default function ImprovedAddPaintingsPage() {
     try {
       const response = await AddPaintings(values);
       if(response.statusCode === 200) {
+        console.log("Painting added successfully:", response.data);
         form.reset();
       } else {
         console.error("Failed to add painting:", response.message);
