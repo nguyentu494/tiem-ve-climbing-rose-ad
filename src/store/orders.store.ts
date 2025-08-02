@@ -10,6 +10,7 @@ interface OrdersState {
 
   fetchOrders: () => Promise<void>;
   clearOrders: () => void;
+  updateOrderStatusInTable: (orderId: string, status: string) => void;
 }
 
 export const useOrdersStore = create<OrdersState>((set) => ({
@@ -28,4 +29,12 @@ export const useOrdersStore = create<OrdersState>((set) => ({
   },
 
   clearOrders: () => set({ orders: [] }),
+
+  updateOrderStatusInTable: (orderId: string, status: string) => {
+    set((state) => ({
+      orders: state.orders.map((order) =>
+        order.orderId === orderId ? { ...order, status } : order
+      ),
+    }));
+  },
 }));

@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { OrderStatusInfo } from "src/constant/order-status";
 import { OrderResponse } from "src/types/response/OrderResponse";
 import { formatCurrency } from "src/utils/FormatCurrency";
 import { formatDatetime } from "src/utils/FormatDatetime";
@@ -15,17 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { OrderStatusInfo } from "src/constant/order-status";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { StatusSelectCell } from "./status-cell";
+import Image from "next/image";
 
 export const columns: ColumnDef<OrderResponse>[] = [
   {
@@ -79,7 +71,12 @@ export const columns: ColumnDef<OrderResponse>[] = [
   },
   {
     accessorKey: "receiverName",
-    header: () => <div className="">Tên người nhận</div>,
+    header: () => <div className="hidden lg:block">Tên người nhận</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="hidden lg:block">{row.getValue("receiverName")}</div>
+      );
+    },
   },
   {
     accessorKey: "phone",
@@ -87,9 +84,11 @@ export const columns: ColumnDef<OrderResponse>[] = [
   },
   {
     accessorKey: "paymentMethod",
-    header: () => <div className="">Phương thức tt</div>,
+    header: () => <div className="hidden lg:block">Phương thức tt</div>,
     cell: ({ row }) => {
-      return <div className="">{row.getValue("paymentMethod")}</div>;
+      return (
+        <div className="hidden lg:block">{row.getValue("paymentMethod")}</div>
+      );
     },
   },
   {
@@ -104,25 +103,34 @@ export const columns: ColumnDef<OrderResponse>[] = [
   },
   {
     accessorKey: "imagePayment",
-    header: () => <div className="text-center">Minh chứng tt</div>,
-    // cell: ({ row }) => {
-    //   const price = parseFloat(row.getValue("total_price"));
-    //   const formatted = new Intl.NumberFormat("ja-JP", {
-    //     style: "currency",
-    //     currency: "JPY",
-    //   }).format(price);
+    header: () => (
+      <div className="text-center hidden lg:block">Minh chứng tt</div>
+    ),
+    cell: ({ row }) => {
+      const image = row.getValue("imagePayment");
 
-    //   return <div className="text-right font-medium">{formatted}</div>;
-    // },
+      return (
+        <div className="text-center hidden lg:block text-sm text-gray-500">
+          {image ? (
+            <Image
+              src={image as string}
+              alt="Payment proof"
+              className="w-16 h-16 object-cover rounded-md mx-auto"
+            />
+          ) : (
+            "Không có"
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "status",
     header: () => <div className="text-center">Trạng thái</div>,
     cell: ({ row }) => {
-      const status = row.getValue("status") as
-        | keyof typeof OrderStatusInfo
-        | undefined;
-      const show = OrderStatusInfo[status ?? "PENDING"];
+      const status = row.getValue("status") as keyof typeof OrderStatusInfo;
+      const orderId = row.getValue("orderId") as string;
+
       const isDisabled =
         status === "PENDING" ||
         status === "REJECTED" ||
@@ -130,25 +138,11 @@ export const columns: ColumnDef<OrderResponse>[] = [
         status === "APPROVED";
 
       return (
-        <div
-          className={`text-center font-bold rounded-4xl items-center justify-center 
-              ${show.color}
-              ${show.bgColor}`}
-        >
-          <Select
-            value={status}
-            // onValueChange={handleStatusChange}
-            disabled={isDisabled}
-          >
-            <SelectTrigger className="text-sm justify-center w-full border-none shadow-none disabled:opacity-70 pt-0 pb-0 disabled:[&_svg]:hidden">
-              {show.label}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="APPROVED">Duyệt đơn</SelectItem>
-              <SelectItem value="REJECTED">Từ chối</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <StatusSelectCell
+          orderId={orderId}
+          status={status as keyof typeof OrderStatusInfo}
+          disabled={isDisabled}
+        />
       );
     },
   },
