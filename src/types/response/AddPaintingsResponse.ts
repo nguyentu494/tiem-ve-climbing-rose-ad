@@ -10,7 +10,7 @@ export const AddPaintingsResponseSchema = z.object({
   size: z.enum(PaintingSize, "Kích thước không hợp lệ"),
   price: z.number().positive("Giá phải lớn hơn 0"),
   quantity: z.number().int().nonnegative("Số lượng không hợp lệ"),
-  categories: z.array(CategoryResponseSchema).min(1, "Phải chọn ít nhất 1 danh mục"),
+  categories: z.array(CategoryResponseSchema).min(1, "Phải chọn ít nhất 1 danh mục").nullable(),
 });
 
 export type AddPaintingsResponse = z.infer<typeof AddPaintingsResponseSchema>;

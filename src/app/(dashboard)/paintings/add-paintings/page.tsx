@@ -12,7 +12,7 @@ import PageHeader from "src/components/add-paintings/Header";
 import { FormHelp } from "src/components/add-paintings/help";
 import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
-import { PaintingSize } from "src/enums/paintings-size.enum";
+import { PaintingSize } from "src/constant/paintings-size";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import {
