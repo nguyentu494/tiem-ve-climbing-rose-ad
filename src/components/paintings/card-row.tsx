@@ -127,7 +127,9 @@ export default function CardRow({ row, categories }: CardRowProps) {
               <Badge variant="secondary" className="text-xs">
                 Số lượng: {data.quantity}
               </Badge>
-              {data.categories?.length > 0 ? (
+              {
+              data.categories &&
+              data.categories?.length > 0 ? (
                 data.categories.map((catId) => (
                   <Badge
                     key={catId.categoryId}

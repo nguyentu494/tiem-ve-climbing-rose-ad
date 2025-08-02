@@ -46,7 +46,7 @@ export default function DetailPaintings({
         price: painting.price,
         quantity: painting.quantity,
         imageUrl: painting.imageUrl,
-        categoryIds: painting.categories.map((category) => category.categoryId),
+        categoryIds: painting.categories ? painting.categories.map((category) => category.categoryId) : [],
       });
     }
   }, [painting]);
