@@ -1,8 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+import { OrderResponse } from "src/types/response/OrderResponse";
+import { formatCurrency } from "src/utils/FormatCurrency";
+import { formatDatetime } from "src/utils/FormatDatetime";
 import { Button } from "../ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Checkbox } from "../ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,15 +15,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Checkbox } from "../ui/checkbox";
-import Image from "next/image";
-import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
-import { Payment } from "src/app/(dashboard)/orders/page";
+import { OrderStatusInfo } from "src/constant/order-status";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<OrderResponse>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -43,51 +44,50 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "paintingId",
+    accessorKey: "orderId",
     header: "Mã order",
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => {
+    accessorKey: "orderDate",
+    header: "Ngày đặt hàng",
+    cell: ({ row }) => {
+      const date = row.getValue("orderDate");
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ngày đặt hàng
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div >
+          {typeof date === "string" && date ? formatDatetime(date) : ""}
+        </div>  
       );
     },
-  },
-  {
-    accessorKey: "size",
-    header: () => <div className="text-right">Tên người nhận</div>,
-  },
-  {
-    accessorKey: "price",
-    header: () => <div className="text-right">Số điện thoại</div>,
-  },
-  {
-    accessorKey: "price",
-    header: () => <div className="text-right">Tổng tiền</div>,
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue("total_price"));
-      const formatted = new Intl.NumberFormat("ja-JP", {
-        style: "currency",
-        currency: "JPY",
-      }).format(price);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+  },
+  {
+    accessorKey: "receiverName",
+    header: () => <div className="">Tên người nhận</div>,
+  },
+  {
+    accessorKey: "phone",
+    header: () => <div className="">Số điện thoại</div>,
+  },
+  {
+    accessorKey: "totalPrice",
+    header: () => <div className="text-center">Tổng tiền</div>,
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("totalPrice"));
+      const formatted = formatCurrency(price);
+
+      return <div className="text-center font-medium">{formatted}</div>;
     },
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-right">Phương thức tt</div>,
+    accessorKey: "paymentMethod",
+    header: () => <div className="text-center">Phương thức tt</div>,
+    cell: ({ row }) => {
+      return <div className="text-center">{row.getValue("paymentMethod")}</div>;
+    },
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-right">Minh chứng tt</div>,
+    accessorKey: "imagePayment",
+    header: () => <div className="text-center">Minh chứng tt</div>,
     // cell: ({ row }) => {
     //   const price = parseFloat(row.getValue("total_price"));
     //   const formatted = new Intl.NumberFormat("ja-JP", {
@@ -97,6 +97,16 @@ export const columns: ColumnDef<Payment>[] = [
 
     //   return <div className="text-right font-medium">{formatted}</div>;
     // },
+  },
+  {
+    accessorKey: "status",
+    header: () => <div className="text-center">Trạng thái</div>,
+    cell: ({ row }) => {
+      const status = row.getValue("status") as keyof typeof OrderStatusInfo | undefined;
+      const show = OrderStatusInfo[status ?? "PENDING"];
+
+      return <div className={`text-center ${show.color} ${show.bgColor} font-bold py-1 rounded-2xl`}>{show.label}</div>;
+    },
   },
   {
     id: "actions",

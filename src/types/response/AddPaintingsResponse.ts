@@ -1,6 +1,6 @@
-import { PaintingSize } from "src/enums/paintings-size.enum";
 import { z } from "zod";
 import { CategoryResponseSchema } from "./CategoryResponse";
+import { PaintingSize } from "src/constant/paintings-size";
 
 export const AddPaintingsResponseSchema = z.object({
   paintingId: z.string(),

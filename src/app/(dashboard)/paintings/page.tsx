@@ -11,7 +11,6 @@ import SearchPaintings from "src/components/paintings/search-paintings";
 import { Button } from "src/components/ui/button";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "src/components/ui/pagination";
 import { sortOptions } from "src/constant/sort-options";
-import { PaintingSize } from "src/enums/paintings-size.enum";
 import { api } from "src/lib/axios";
 import { SearchingParams } from "src/types/request/SearchParams";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
@@ -19,6 +18,7 @@ import { PaintingsResponse } from "src/types/response/PaintingsResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import { debounce } from "src/utils/Debounce";
 import loadingAnimation from "../../../../public/animation/loading-component.json";
+import { PaintingSize } from "src/constant/paintings-size";
 
 const menuHeaders: AdminHeaderProps[] = [
   {
@@ -166,18 +166,11 @@ export default function PaintingsPage() {
         >
           + Thêm
         </Button>
-        <div>
-          
-        </div>
+        <div></div>
         <SearchPaintings
           searchParams={searchingParams}
           categories={categories}
-          availableSizes={[
-            PaintingSize.SIZE_20x20,
-            PaintingSize.SIZE_30x40,
-            PaintingSize.SIZE_40x50,
-            PaintingSize.ART_SUPPLIES,
-          ]}
+          availableSizes={Object.values(PaintingSize)}
           sortOptions={sortOptions}
           activeFiltersCount={activeFiltersCount}
           keyword={keyword}
@@ -194,7 +187,6 @@ export default function PaintingsPage() {
           getSelectedCategoryNames={getSelectedCategoryNames}
           setSearchParams={setSearchingParams}
         />
-        
 
         {isLoading ? (
           <div className="flex items-center justify-center h- flex-col ">
@@ -214,8 +206,6 @@ export default function PaintingsPage() {
         )}
 
         <div className="flex items-center justify-end space-x-2 py-4">
-
-
           <Pagination>
             <PaginationContent>
               <PaginationItem>

@@ -1,3 +1,6 @@
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("vi-VN").format(amount);
+  return new Intl.NumberFormat("ja-JP", {
+    style: "currency",
+    currency: "JPY",
+  }).format(amount);
 }

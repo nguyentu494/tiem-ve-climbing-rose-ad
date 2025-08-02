@@ -32,13 +32,14 @@ import {
 } from "../ui/dropdown-menu";
 import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { OrderResponse } from "src/types/response/OrderResponse";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends OrderResponse, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -99,7 +100,7 @@ export function DataTable<TData, TValue>({
         </DropdownMenu> */}
       </div>
       <div className="overflow-hidden rounded-md">
-        <Table>
+        <Table className="border">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

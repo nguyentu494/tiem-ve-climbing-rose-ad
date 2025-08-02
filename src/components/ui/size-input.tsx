@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PaintingSize } from "src/enums/paintings-size.enum";
+import { PaintingSize } from "src/constant/paintings-size";
 
 interface SizeInputProps {
   value?: string;

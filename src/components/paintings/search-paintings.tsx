@@ -28,7 +28,7 @@ import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
 import { SearchingParams } from "src/types/request/SearchParams";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { PaintingSize } from "src/enums/paintings-size.enum";
+import { PaintingSize } from "src/constant/paintings-size";
 
 interface ProductFilterBarProps {
   searchParams: SearchingParams;

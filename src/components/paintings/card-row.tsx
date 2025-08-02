@@ -24,9 +24,10 @@ import {
 } from "src/types/ui/FormAddPaintings";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PaintingSize } from "src/enums/paintings-size.enum";
 import { AddPaintings, updatePaintings } from "src/api/paintings";
 import { usePaintingDetail } from "src/hooks/usePaintingDetail";
+import { formatCurrency } from "src/utils/FormatCurrency";
+import { PaintingSize } from "src/constant/paintings-size";
 
 type CardRowProps = {
   row: Row<AddPaintingsResponse>;
@@ -146,10 +147,7 @@ export default function CardRow({ row, categories }: CardRowProps) {
             {/* Giá và nút */}
             <div className="flex justify-between items-center">
               <span className="text-sm font-bold text-green-600">
-                {data.price.toLocaleString("ja-JP", {
-                  style: "currency",
-                  currency: "JPY",
-                })}
+                {formatCurrency(data.price)}
               </span>
             </div>
           </div>
