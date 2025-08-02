@@ -1,5 +1,6 @@
 "use client";
 
+import Lottie from "lottie-react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { GetAllPaintings } from "src/api/paintings";
@@ -8,6 +9,7 @@ import { columns } from "src/components/paintings/columns";
 import { DataTable } from "src/components/paintings/data-table";
 import SearchPaintings from "src/components/paintings/search-paintings";
 import { Button } from "src/components/ui/button";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "src/components/ui/pagination";
 import { sortOptions } from "src/constant/sort-options";
 import { PaintingSize } from "src/enums/paintings-size.enum";
 import { api } from "src/lib/axios";
@@ -16,6 +18,7 @@ import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { PaintingsResponse } from "src/types/response/PaintingsResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import { debounce } from "src/utils/Debounce";
+import loadingAnimation from "../../../../public/animation/loading-component.json";
 
 const menuHeaders: AdminHeaderProps[] = [
   {
@@ -31,7 +34,7 @@ export default function PaintingsPage() {
   const [searchingParams, setSearchingParams] = React.useState<SearchingParams>(
     {
       page: 1,
-      size: 3,
+      size: 6,
       isActive: true,
     }
   );
@@ -39,6 +42,7 @@ export default function PaintingsPage() {
   const [data, setData] = React.useState<PaintingsResponse | null>(null);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [keyword, setKeyword] = React.useState(searchingParams.keyword ?? "");
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const handleSearchChange = (value: string) => {
     setSearchingParams((prev) => ({ ...prev, search: value, page: 1 }));
@@ -102,7 +106,7 @@ export default function PaintingsPage() {
       isActive: true,
       sort: "",
       page: 1,
-      size: 3,
+      size: 6,
     });
   };
 
@@ -120,12 +124,24 @@ export default function PaintingsPage() {
 
   React.useEffect(() => {
     // Fetch data from API or any other source
+    setIsLoading(true);
     const fetchData = async () => {
       const response = await GetAllPaintings(searchingParams);
-
       setData(response);
+      setIsLoading(false);
     };
+    fetchData();
+    const timeout = setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 200);
 
+    return () => clearTimeout(timeout);
+  }, [searchingParams]);
+
+  React.useEffect (() => {
     const fetchCategories = async () => {
       try {
         const response = await api.get("/categories");
@@ -134,23 +150,25 @@ export default function PaintingsPage() {
         console.error("Error fetching categories:", error);
       }
     };
-    fetchData();
     fetchCategories();
-  }, [searchingParams]);
+  }, []);
 
   return (
-    <>
+    <div>
       <AdminHeader items={menuHeaders} />
-      <Button
-        onClick={() => {
-          router.push("/paintings/add-paintings");
-        }}
-        className="ml-2 w-sm"
-      >
-        Thêm
-      </Button>
 
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-0 flex flex-col">
+        <Button
+          onClick={() => {
+            router.push("/paintings/add-paintings");
+          }}
+          className="self-end mb-2"
+        >
+          + Thêm
+        </Button>
+        <div>
+          
+        </div>
         <SearchPaintings
           searchParams={searchingParams}
           categories={categories}
@@ -164,6 +182,7 @@ export default function PaintingsPage() {
           activeFiltersCount={activeFiltersCount}
           keyword={keyword}
           isFilterOpen={isFilterOpen}
+          quantity={data?.totalItems || 0}
           setIsFilterOpen={setIsFilterOpen}
           handleSearchChange={handleSearchChange}
           handleKeywordChange={handleKeywordChange}
@@ -175,37 +194,90 @@ export default function PaintingsPage() {
           getSelectedCategoryNames={getSelectedCategoryNames}
           setSearchParams={setSearchingParams}
         />
+        
 
-        <DataTable columns={columns} data={data?.items || []} categories={categories} />
+        {isLoading ? (
+          <div className="flex items-center justify-center h- flex-col ">
+            <Lottie animationData={loadingAnimation} loop className="size-48" />
+            <p className="text-sm text-primary">Đang tải dữ liệu...</p>
+          </div>
+        ) : data?.items.length === 0 ? (
+          <div className="flex items-center justify-center h-64">
+            <p className="text-gray-500">Không có tranh nào được tìm thấy.</p>
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={data?.items || []}
+            categories={categories}
+          />
+        )}
+
         <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              setSearchingParams((prev) => ({
-                ...prev,
-                page: Math.max((prev.page ?? 1) - 1, 1),
-              }))
-            }
-            disabled={searchingParams.page === 1}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              setSearchingParams((prev) => ({
-                ...prev,
-                page: Math.min((prev.page ?? 1) + 1, data?.totalPages || 1),
-              }))
-            }
-            disabled={searchingParams.page === (data?.totalPages || 1)}
-          >
-            Next
-          </Button>
+
+
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    setSearchingParams((prev) => ({
+                      ...prev,
+                      page: Math.max((prev.page ?? 1) - 1, 1),
+                    }))
+                  }
+                  aria-disabled={searchingParams.page === 1}
+                  className={
+                    searchingParams.page === 1
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>{" "}
+              {Array.from({ length: data?.totalPages || 1 }, (_, index) => {
+                const pageNumber = index + 1;
+                const isActive = pageNumber === (searchingParams.page ?? 1);
+                return (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      isActive={isActive}
+                      onClick={() =>
+                        setSearchingParams((prev) => ({
+                          ...prev,
+                          page: pageNumber,
+                        }))
+                      }
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    setSearchingParams((prev) => ({
+                      ...prev,
+                      page: Math.min(
+                        (prev.page ?? 1) + 1,
+                        data?.totalPages || 1
+                      ),
+                    }))
+                  }
+                  aria-disabled={
+                    searchingParams.page === (data?.totalPages || 1)
+                  }
+                  className={
+                    searchingParams.page === (data?.totalPages || 1)
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       </div>
-    </>
+    </div>
   );
 }

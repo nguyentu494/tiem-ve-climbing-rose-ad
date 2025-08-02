@@ -29,16 +29,16 @@ export const sidebarData = {
       //   { title: "Settings", url: "#" },
       // ],
     },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     { title: "Genesis", url: "#" },
-    //     { title: "Explorer", url: "#" },
-    //     { title: "Quantum", url: "#" },
-    //   ],
-    // },
+    {
+      title: "Đơn hàng",
+      url: "/admin/orders",
+      icon: Bot,
+      // items: [
+      //   { title: "Genesis", url: "#" },
+      //   { title: "Explorer", url: "#" },
+      //   { title: "Quantum", url: "#" },
+      // ],
+    },
     // {
     //   title: "Documentation",
     //   url: "#",

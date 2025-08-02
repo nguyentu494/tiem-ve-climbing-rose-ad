@@ -39,6 +39,34 @@ export const AddPaintings = async (
     throw error;
   }
 };
+export const updatePaintings = async (
+  data: FormAddPaintings
+) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", data.imageUrl);
+
+    const responseImage = await api.post("/files/upload/image", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // BẮT BUỘC
+      },
+    });
+
+    const imageUrl = responseImage.data.data.secure_url;
+    console.log(imageUrl.secure_url)
+
+    // const response = await api.post("/paintings/create", {
+    //   ...data,
+    //   imageUrl,
+    // });
+
+    // return response.data;
+    return null;
+  } catch (error) {
+    console.error("Error adding painting:", error);
+    throw error;
+  }
+};
 
 export const GetAllPaintings = async (params?: SearchingParams): Promise<PaintingsResponse> => {
   try {

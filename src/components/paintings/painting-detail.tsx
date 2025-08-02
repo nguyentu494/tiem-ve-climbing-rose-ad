@@ -91,17 +91,17 @@ export default function DetailPaintings({
                   <CategoriesDetail form={form} categories={categories} />
                 </>
               )}
+              <SheetFooter className="border-t p-4">
+                <Button type="submit">Lưu</Button>
+                <SheetClose asChild>
+                  <Button variant="outline">Đóng</Button>
+                </SheetClose>
+              </SheetFooter>
             </form>
           </Form>
         </div>
 
         {/* Footer cố định */}
-        <SheetFooter className="border-t p-4">
-          <Button type="submit">Lưu</Button>
-          <SheetClose asChild>
-            <Button variant="outline">Đóng</Button>
-          </SheetClose>
-        </SheetFooter>
       </div>
     </SheetContent>
   );

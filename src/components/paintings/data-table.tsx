@@ -65,7 +65,7 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-2">
         {/* <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -102,7 +102,7 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
         </DropdownMenu> */}
       </div>
       <div className="overflow-hidden rounded-md">
-        <Table>
+        {/* <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -120,7 +120,7 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
                 })}
               </TableRow>
             ))}
-          </TableHeader>
+          </TableHeader> */}
           {/* <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -149,11 +149,11 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
               </TableRow>
             )}
           </TableBody> */}
-        </Table>
+        {/* </Table> */}
         <div>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <div key={row.id} className="border-b p-4">
+              <div key={row.id} className="border-b p-2">
                 <CardRow row={row} categories={categories ?? []} />
               </div>
             ))

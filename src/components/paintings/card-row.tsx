@@ -25,7 +25,7 @@ import {
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaintingSize } from "src/enums/paintings-size.enum";
-import { AddPaintings } from "src/api/paintings";
+import { AddPaintings, updatePaintings } from "src/api/paintings";
 import { usePaintingDetail } from "src/hooks/usePaintingDetail";
 
 type CardRowProps = {
@@ -68,14 +68,15 @@ export default function CardRow({ row, categories }: CardRowProps) {
 
   const onSubmit = async (values: FormAddPaintings) => {
     setIsSubmitting(true);
+    console.log("Submitting values:", values);
     try {
-      const response = await AddPaintings(values);
-      if (response.statusCode === 200) {
-        console.log("Painting added successfully:", response.data);
-        form.reset();
-      } else {
-        console.error("Failed to add painting:", response.message);
-      }
+      const response = await updatePaintings(values);
+      // if (response.statusCode === 200) {
+      //   console.log("Painting updated successfully:", response.data);
+      //   form.reset();
+      // } else {
+      //   console.error("Failed to update painting:", response.message);
+      // }
     } catch (error) {
       console.error("Submit error:", error);
     } finally {
@@ -92,101 +93,103 @@ export default function CardRow({ row, categories }: CardRowProps) {
           aria-label="Select row"
         />
       </div>
-      <Card className="w-full flex gap-3 rounded-xl shadow border p-3 items-center flex-row">
+      <Card className="w-full flex gap-3 rounded-xl shadow border p-3 items-center flex-row hover:bg-secondary hover:shadow-md transition-all">
         {/* Hình ảnh nhỏ hơn */}
-        <div className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden">
-          <Image
-            src={data.imageUrl}
-            alt={data.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        {/* Nội dung */}
-        <div className="flex flex-col justify-between flex-1 gap-1.5">
-          <div>
-            <CardTitle className="text-base font-semibold">
-              {data.name}
-            </CardTitle>
-            <p className="text-xs text-muted-foreground line-clamp-2">
+        <div className="flex justify-between w-full gap-3">
+          <div className="relative w-18 h-18 shrink-0 rounded-lg overflow-hidden">
+            <Image
+              src={data.imageUrl}
+              alt={data.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+          {/* Nội dung */}
+          <div className="flex flex-col justify-between flex-1 gap-1">
+            <div>
+              <CardTitle className="text-base font-semibold flex items-center gap-1 ">
+                {data.name}
+                <div className="text-xs text-muted-foreground">
+                  ({data.paintingId})
+                </div>
+              </CardTitle>
+              {/* <p className="text-xs text-muted-foreground line-clamp-1">
               {data.description}
-            </p>
-          </div>
-
-          {/* Badge group */}
-          <div className="flex flex-wrap items-center gap-1">
-            <Badge variant="outline" className="text-xs">
-              {data.size}
-            </Badge>
-            <Badge variant="secondary" className="text-xs">
-              Số lượng: {data.quantity}
-            </Badge>
-            {data.categories?.length > 0 ? (
-              data.categories.map((catId) => (
-                <Badge
-                  key={catId.categoryId}
-                  variant="default"
-                  className="text-xs"
-                >
-                  {catId.name}
-                </Badge>
-              ))
-            ) : (
-              <Badge variant="destructive" className="text-xs">
-                Chưa có danh mục
-              </Badge>
-            )}
-          </div>
-
-          {/* Giá và nút */}
-          <div className="flex justify-between items-center">
-            <span className="text-base font-bold text-green-600">
-              {data.price.toLocaleString("ja-JP", {
-                style: "currency",
-                currency: "JPY",
-              })}
-            </span>
-            <div className="flex items-center">
-              <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleRowClick(data)}
-                  >
-                    Xem chi tiết
-                  </Button>
-                </SheetTrigger>
-                <DetailPaintings
-                  categories={categories}
-                  isSubmitting={isSubmitting}
-                  form={form}
-                  onSubmit={onSubmit}
-                />
-              </Sheet>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-7 w-7 p-0 ml-1">
-                    <span className="sr-only">Open menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      navigator.clipboard.writeText(data.paintingId)
-                    }
-                  >
-                    Copy painting ID
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>View customer</DropdownMenuItem>
-                  <DropdownMenuItem>View painting details</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            </p> */}
             </div>
+
+            {/* Badge group */}
+            <div className="flex flex-wrap items-center gap-1">
+              <Badge variant="outline" className="text-xs">
+                {data.size}
+              </Badge>
+              <Badge variant="secondary" className="text-xs">
+                Số lượng: {data.quantity}
+              </Badge>
+              {data.categories?.length > 0 ? (
+                data.categories.map((catId) => (
+                  <Badge
+                    key={catId.categoryId}
+                    variant="default"
+                    className="text-xs"
+                  >
+                    {catId.name}
+                  </Badge>
+                ))
+              ) : (
+                <Badge variant="destructive" className="text-xs">
+                  Chưa có danh mục
+                </Badge>
+              )}
+            </div>
+
+            {/* Giá và nút */}
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-bold text-green-600">
+                {data.price.toLocaleString("ja-JP", {
+                  style: "currency",
+                  currency: "JPY",
+                })}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleRowClick(data)}
+                >
+                  Xem chi tiết
+                </Button>
+              </SheetTrigger>
+              <DetailPaintings
+                categories={categories}
+                isSubmitting={isSubmitting}
+                form={form}
+                onSubmit={onSubmit}
+              />
+            </Sheet>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-7 w-7 p-0 ml-1">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => navigator.clipboard.writeText(data.paintingId)}
+                >
+                  Copy painting ID
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>View customer</DropdownMenuItem>
+                <DropdownMenuItem>View painting details</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </Card>

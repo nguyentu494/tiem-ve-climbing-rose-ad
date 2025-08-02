@@ -38,8 +38,8 @@ interface ProductFilterBarProps {
   activeFiltersCount: number;
   isFilterOpen: boolean;
   keyword?: string;
+  quantity?: number;
   setIsFilterOpen: (open: boolean) => void;
-
   handleSearchChange: (val: string) => void;
   handleKeywordChange: (val: string) => void;
   handleCategoryChange: (id: string, checked: boolean) => void;
@@ -59,8 +59,8 @@ export default function SearchPaintings({
   activeFiltersCount,
   keyword,
   isFilterOpen,
+  quantity,
   setIsFilterOpen,
-  handleSearchChange,
   handleKeywordChange,
   handleCategoryChange,
   handleSizeChange,
@@ -72,10 +72,10 @@ export default function SearchPaintings({
 }: ProductFilterBarProps) {
   return (
     <div>
-      <Card className="p-4">
+      <Card className="p-4 mr-3">
         <div className="flex flex-wrap items-center gap-4">
           {/* Keyword */}
-          <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center gap-2 min-w-0 ">
             <Label className="text-sm font-medium whitespace-nowrap">
               Từ khóa:
             </Label>
@@ -347,67 +347,74 @@ export default function SearchPaintings({
         </div>
       </Card>
 
-      {/* Filter Tags */}
-      {activeFiltersCount > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="text-sm text-muted-foreground">
-            Bộ lọc đang áp dụng:
-          </span>
-          {getSelectedCategoryNames().map((name) => (
-            <Badge
-              key={name}
-              variant="secondary"
-              className="gap-1 cursor-pointer"
-              onClick={() => {
-                const category = categories.find((c) => c.name === name);
-                if (category) handleCategoryChange(category.categoryId, false);
-              }}
-            >
-              {name}
-              <X className="h-3 w-3" />
-            </Badge>
-          ))}
-          {searchParams.sizes &&
-            searchParams.sizes.map((size) => (
+      <div className="flex items-center justify-between mr-4">
+        {activeFiltersCount > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="text-sm text-muted-foreground">
+              Bộ lọc đang áp dụng:
+            </span>
+            {getSelectedCategoryNames().map((name) => (
               <Badge
-                key={size}
+                key={name}
                 variant="secondary"
                 className="gap-1 cursor-pointer"
-                onClick={() => handleSizeChange(size, false)}
+                onClick={() => {
+                  const category = categories.find((c) => c.name === name);
+                  if (category)
+                    handleCategoryChange(category.categoryId, false);
+                }}
               >
-                Size {size}
+                {name}
                 <X className="h-3 w-3" />
               </Badge>
             ))}
-          {searchParams.isActive !== undefined && (
-            <Badge
-              variant="secondary"
-              className="gap-1 cursor-pointer"
-              onClick={() =>
-                setSearchParams((prev: any) => ({
-                  ...prev,
-                  isActive: undefined,
-                }))
-              }
-            >
-              Đang bán
-              <X className="h-3 w-3" />
-            </Badge>
-          )}
-          {searchParams.sort && (
-            <Badge
-              variant="secondary"
-              className="gap-1 cursor-pointer"
-              onClick={() => handleSortChange("")}
-            >
-              {sortOptions &&
-                sortOptions.find((opt) => opt.value === searchParams.sort)
-                  ?.label}
-              <X className="h-3 w-3" />
-            </Badge>
-          )}
-        </div>
-      )}
+            {searchParams.sizes &&
+              searchParams.sizes.map((size) => (
+                <Badge
+                  key={size}
+                  variant="secondary"
+                  className="gap-1 cursor-pointer"
+                  onClick={() => handleSizeChange(size, false)}
+                >
+                  Size {size}
+                  <X className="h-3 w-3" />
+                </Badge>
+              ))}
+            {searchParams.isActive !== undefined && (
+              <Badge
+                variant="secondary"
+                className="gap-1 cursor-pointer"
+                onClick={() =>
+                  setSearchParams((prev: any) => ({
+                    ...prev,
+                    isActive: undefined,
+                  }))
+                }
+              >
+                Đang bán
+                <X className="h-3 w-3" />
+              </Badge>
+            )}
+            {searchParams.sort && (
+              <Badge
+                variant="secondary"
+                className="gap-1 cursor-pointer"
+                onClick={() => handleSortChange("")}
+              >
+                {sortOptions &&
+                  sortOptions.find((opt) => opt.value === searchParams.sort)
+                    ?.label}
+                <X className="h-3 w-3" />
+              </Badge>
+            )}
+          </div>
+        )}
+        {quantity !== undefined && (
+          <div className="mt-2 text-sm text-muted-foreground">
+            Tổng số tranh: <span className="font-semibold">{quantity}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
