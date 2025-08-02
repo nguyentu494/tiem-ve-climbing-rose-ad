@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { GetAllCategories } from "src/api/category";
+import { GetAllCategories } from "src/api/categories";
 import { AddPaintings } from "src/api/paintings";
 import { FormActions } from "src/components/add-paintings/actions";
 import ArtworkForm from "src/components/add-paintings/add-form";

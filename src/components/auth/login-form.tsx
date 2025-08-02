@@ -39,7 +39,7 @@ export function LoginForm({
 
     if (response.statusCode === 200) {
       // Redirect or show success message
-      router.push("/");
+      router.push("/paintings");
     } else {
       // Handle error
       

@@ -15,7 +15,7 @@ export default function LoginPage() {
     const token = localStorage.getItem(LocalStorage.token);
 
     if (token) {
-      router.push("/");
+      router.push("/paintings"); 
     } else {
       setIsLoading(false); // không có token => cho hiện login form
     }
