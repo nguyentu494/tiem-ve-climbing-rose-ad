@@ -6,22 +6,22 @@ import { LoginForm } from "src/components/auth/login-form";
 import { LocalStorage } from "src/lib/local-storage";
 import Lottie from "lottie-react";
 import loadingAnimation from "../../../../public/animation/loading-page.json";
+import { useAuthStore } from "src/store/auth.store";
+import { set } from "zod";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const {loading} = useAuthStore();
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorage.token);
 
     if (token) {
-      router.push("/paintings"); 
-    } else {
-      setIsLoading(false); // không có token => cho hiện login form
-    }
-  }, []);
+      router.push("/paintings");
+    } 
+  }, [router]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Lottie

@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,42 +9,50 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { LoginRequestSchema } from "src/types/request/LoginRequest";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Login, LoginResponse } from "src/api/auth";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Lottie from "lottie-react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { LoginResponse } from "src/api/auth";
+import { useAuth } from "src/hooks/useAuth";
+import { LoginRequestSchema } from "src/types/request/LoginRequest";
+import z from "zod";
 import loadingAnimation from "../../../public/animation/loading-component.json";
-
-
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleLogin = async (values: z.infer<typeof LoginRequestSchema>) => {
-    // Handle login logic here
-    setIsLoading(true);
-    const response: LoginResponse = await Login(values);
+    try {
+      setLoading(true);
+      const response = await login(values);
 
-    if (response.statusCode === 200) {
-      // Redirect or show success message
-      router.push("/paintings");
-    } else {
+      if (response) {
+        router.push("/paintings");
+      } else {
+        
+        // Handle error
+      }
+    } catch (error) {
       // Handle error
-      
     }
-
-  }
+  };
 
   const form = useForm<z.infer<typeof LoginRequestSchema>>({
     resolver: zodResolver(LoginRequestSchema),
@@ -53,11 +60,11 @@ export function LoginForm({
       username: "",
       password: "",
     },
-  })
-  
+  });
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      {isLoading && (
+      {loading && (
         <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm flex items-center justify-center flex-col gap-4">
           <Lottie animationData={loadingAnimation} loop size={12} />
           <p className="text-sm text-primary">Đang đăng nhập...</p>
@@ -116,7 +123,7 @@ export function LoginForm({
                   )}
                 />
                 <div className="flex flex-col gap-3">
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full" disabled={loading}>
                     Login
                   </Button>
                 </div>

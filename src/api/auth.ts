@@ -20,23 +20,22 @@ export const Login = async (
 
   if(parsed.statusCode === 200) {
     localStorage.setItem(LocalStorage.token, parsed.data.token);
-    localStorage.setItem(LocalStorage.userId, JSON.stringify(parsed.data.user.userId));
   }
 
   return parsed;
 };
 
-const Logout = async (): Promise<void> => {
+export const Logout = async (): Promise<void> => {
   const token = localStorage.getItem(LocalStorage.token);
   if (!token) return;
 
   try {
-    await api.post("/auth/logout", { token }); // Gửi dạng request body JSON
+    await api.post("/auth/logout", { token });
+    
   } catch (err) {
     console.error("Logout failed:", err);
   } finally {
     localStorage.removeItem(LocalStorage.token);
-    localStorage.removeItem(LocalStorage.userId);
   }
 };
 

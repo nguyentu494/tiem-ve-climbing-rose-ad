@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { LocalStorage } from "src/lib/local-storage";
 import Lottie from "lottie-react";
 import loadingAnimation from "../../../public/animation/loading-page.json";
+import { useAuth } from "src/hooks/useAuth";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { loading, setLoading } = useAuth();
 
   useEffect(() => {
     setIsLoading(false);
@@ -27,6 +29,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
     }
     setIsLoading(true);
   }, [router]);
+
+  useEffect(() => {
+    const token = localStorage.getItem(LocalStorage.token);
+    if (!token) {
+      setIsLoading(false);
+      router.push("/login");
+    }
+  }, [loading]);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -38,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          {isLoading === false ? (
+          {isLoading === false || loading ? (
             <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm flex items-center justify-center flex-col gap-4">
               <Lottie animationData={loadingAnimation} loop size={12} />
               <p className="text-sm text-primary">Đang tải...</p>
