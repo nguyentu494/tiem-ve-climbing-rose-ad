@@ -9,10 +9,17 @@ import { columns } from "src/components/paintings/columns";
 import { DataTable } from "src/components/paintings/data-table";
 import SearchPaintings from "src/components/paintings/search-paintings";
 import { Button } from "src/components/ui/button";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "src/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "src/components/ui/pagination";
 import { sortOptions } from "src/constant/sort-options";
 import { api } from "src/lib/axios";
-import { SearchingParams } from "src/types/request/SearchParams";
+import { SearchingParams } from "src/types/request/PaintingParams";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { PaintingsResponse } from "src/types/response/PaintingsResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
@@ -141,7 +148,7 @@ export default function PaintingsPage() {
     return () => clearTimeout(timeout);
   }, [searchingParams]);
 
-  React.useEffect (() => {
+  React.useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await api.get("/categories");

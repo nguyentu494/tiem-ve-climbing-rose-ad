@@ -1,29 +1,60 @@
 import { OrderStatusInfo } from "src/constant/order-status";
 import { useOrders } from "src/hooks/useOrders";
 import { api } from "src/lib/axios";
+import { OrderParams } from "src/types/request/OrderParams";
 import { BaseResponseSchema } from "src/types/response/BaseResponse";
-import { OrderSchema } from "src/types/response/OrderResponse";
+import {
+  OrderResponseSchema,
+  OrderSchema,
+} from "src/types/response/OrderResponse";
 import z from "zod";
 
-const OrdersResponse = BaseResponseSchema(z.array(OrderSchema));
+const OrdersResponse = BaseResponseSchema(OrderResponseSchema);
 
 type OrdersResponseType = z.infer<typeof OrdersResponse>;
 
-
-export const GetAllOrders = async (): Promise<OrdersResponseType> => {
-    try {
-        const response = await api.get("/orders/my-orders");
-        const parsed = OrdersResponse.safeParse(response.data);
-        if (!parsed.success) {
-            console.error("Error parsing orders response:", parsed.error);
-            throw new Error("Invalid orders response");
-        }
-        return parsed.data;
-    } catch (error) {
-        console.error("Error fetching orders:", error);
-        throw error;
+export const GetAllOrders = async (
+  params?: OrderParams
+): Promise<OrdersResponseType> => {
+  try {
+    const response = await api.get("/orders", {
+      params,
+    });
+    const parsed = OrdersResponse.safeParse(response.data);
+    if (!parsed.success) {
+      console.error("Error parsing orders response:", parsed.error);
+      throw new Error("Invalid orders response");
     }
-}
+    return parsed.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+// export const GetAllOrders = async (): Promise<> => {
+//   try {
+//     const response = await api.get("/paintings", {
+//       params: ,
+//       paramsSerializer: (params) => {
+//         const searchParams = new URLSearchParams();
+//         for (const key in params) {
+//           const value = params[key];
+//           if (Array.isArray(value)) {
+//             value.forEach((val) => searchParams.append(key, String(val)));
+//           } else {
+//             searchParams.append(key, String(value));
+//           }
+//         }
+//         return searchParams.toString();
+//       },
+//     });
+//     return response.data.data;
+//   } catch (error) {
+//     console.error("Error fetching paintings:", error);
+//     throw error;
+//   }
+// };
 
 export const updateOrderStatus = async (
   orderId: string,
@@ -48,7 +79,7 @@ export const updateOrderStatus = async (
     console.error("Error updating order status:", error);
     throw error;
   }
-}
+};
 
 export const GetOrderById = async (id: string): Promise<OrdersResponseType> => {
   try {

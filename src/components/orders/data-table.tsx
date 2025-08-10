@@ -2,15 +2,12 @@
 
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  useReactTable,
-  VisibilityState,
+  useReactTable
 } from "@tanstack/react-table";
 
 import {
@@ -21,25 +18,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "../ui/button";
 import React from "react";
-import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
-import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { OrderResponse } from "src/types/response/OrderResponse";
+import { Order, OrderResponse } from "src/types/response/OrderResponse";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData extends OrderResponse, TValue>({
+export function DataTable<TData extends Order, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -50,7 +37,6 @@ export function DataTable<TData extends OrderResponse, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -60,6 +46,7 @@ export function DataTable<TData extends OrderResponse, TValue>({
       rowSelection,
     },
   });
+
 
   return (
     <div>
@@ -121,7 +108,7 @@ export function DataTable<TData extends OrderResponse, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getCoreRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

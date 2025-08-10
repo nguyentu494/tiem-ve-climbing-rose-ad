@@ -10,7 +10,7 @@ export const OrderItemSchema = z.object({
 
 export const OrderSchema = z.object({
   orderId: z.string(),
-  orderDate: z.string(), 
+  orderDate: z.string(),
   status: z.string(),
   deliveryCost: z.number(),
   totalPaintingsPrice: z.number(),
@@ -32,4 +32,13 @@ export const OrderSchema = z.object({
   orderItems: z.array(OrderItemSchema),
 });
 
-export type OrderResponse = z.infer<typeof OrderSchema>;
+export const OrderResponseSchema = z.object({
+  items: z.array(OrderSchema),
+  page: z.number().int().nonnegative(),
+  size: z.number().int().nonnegative(),
+  totalPages: z.number().int().nonnegative(),
+  totalItems: z.number().int().nonnegative(),
+});
+
+export type Order = z.infer<typeof OrderSchema>;
+export type OrderResponse = z.infer<typeof OrderResponseSchema>;

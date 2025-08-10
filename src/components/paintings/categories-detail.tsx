@@ -25,7 +25,7 @@ export default function CategoriesDetail({
   categories: CategoryResponse[];
 }) {
   return (
-    <Card className="border-0 shadow-none pb-0 mb-0">
+    <Card className="border-0 shadow-none pb-4 mb-0">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <div className="w-2 h-2 bg-purple-500 rounded-full" />

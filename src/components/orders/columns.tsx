@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { OrderStatusInfo } from "src/constant/order-status";
-import { OrderResponse } from "src/types/response/OrderResponse";
 import { formatCurrency } from "src/utils/FormatCurrency";
 import { formatDatetime } from "src/utils/FormatDatetime";
 import { Button } from "../ui/button";
@@ -18,8 +17,9 @@ import {
 } from "../ui/dropdown-menu";
 import { StatusSelectCell } from "./status-cell";
 import Image from "next/image";
+import { Order } from "src/types/response/OrderResponse";
 
-export const columns: ColumnDef<OrderResponse>[] = [
+export const columns: ColumnDef<Order>[] = [
   {
     id: "select",
     header: ({ table }) => (

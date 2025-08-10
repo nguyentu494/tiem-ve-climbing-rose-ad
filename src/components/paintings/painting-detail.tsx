@@ -1,25 +1,22 @@
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 import {
+  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { SheetClose } from "@/components/ui/sheet";
-import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
-import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { UseFormReturn } from "react-hook-form";
-import BasicInfoSection from "../add-paintings/basic-info";
-import ImageUploadSection from "../add-paintings/image-upload";
-import SpecificationsSection from "../add-paintings/specifications";
-import CategoriesSection from "../add-paintings/catgories";
-import { PaintingBasicInfo } from "./basic-info-detail";
-import { usePaintingDetail } from "src/hooks/usePaintingDetail";
+import Lottie from "lottie-react";
 import { useEffect } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { usePaintingDetail } from "src/hooks/usePaintingDetail";
+import { CategoryResponse } from "src/types/response/CategoryResponse";
+import { FormAddPaintings } from "src/types/ui/FormAddPaintings";
+import { PaintingBasicInfo } from "./basic-info-detail";
+import CategoriesDetail from "./categories-detail";
 import { ImageUploadDetail } from "./image-upload-detail";
 import SpecificationsDetail from "./specification-detail";
-import CategoriesDetail from "./categories-detail";
 
 interface ArtworkFormProps {
   onSubmit: (values: FormAddPaintings) => void;
@@ -71,7 +68,10 @@ export default function DetailPaintings({
           }}
         >
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6 pb-4"
+            >
               {painting && (
                 <>
                   <PaintingBasicInfo
@@ -92,9 +92,25 @@ export default function DetailPaintings({
                 </>
               )}
               <SheetFooter className="border-t p-4">
-                <Button type="submit">Lưu</Button>
+                <Button
+                  type="submit"
+                  className={`${
+                    isSubmitting ? "opacity-100 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Đang cập nhật..." : "Lưu"}
+                </Button>
                 <SheetClose asChild>
-                  <Button variant="outline">Đóng</Button>
+                  <Button
+                    variant="outline"
+                    className={`${
+                      isSubmitting ? "opacity-100 cursor-not-allowed" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    Đóng
+                  </Button>
                 </SheetClose>
               </SheetFooter>
             </form>

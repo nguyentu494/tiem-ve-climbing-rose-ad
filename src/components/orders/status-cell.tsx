@@ -39,7 +39,7 @@ export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
 
   return (
     <div
-      className={`text-center font-bold rounded-4xl items-center justify-center md:w-36
+      className={`flex text-center font-bold rounded-4xl items-center justify-center 
         ${show.color}
         ${show.bgColor}`}
     >

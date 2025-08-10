@@ -39,17 +39,17 @@ export const sidebarData = {
       //   { title: "Quantum", url: "#" },
       // ],
     },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     { title: "Introduction", url: "#" },
-    //     { title: "Get Started", url: "#" },
-    //     { title: "Tutorials", url: "#" },
-    //     { title: "Changelog", url: "#" },
-    //   ],
-    // },
+    {
+      title: "Quản lý danh mục",
+      url: "/admin/categories",
+      icon: BookOpen,
+      // items: [
+      //   { title: "Introduction", url: "#" },
+      //   { title: "Get Started", url: "#" },
+      //   { title: "Tutorials", url: "#" },
+      //   { title: "Changelog", url: "#" },
+      // ],
+    },
     // {
     //   title: "Settings",
     //   url: "#",

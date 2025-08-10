@@ -26,7 +26,7 @@ import {
 } from "../ui/sheet";
 import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
-import { SearchingParams } from "src/types/request/SearchParams";
+import { SearchingParams } from "src/types/request/PaintingParams";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { PaintingSize } from "src/constant/paintings-size";
 

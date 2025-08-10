@@ -71,13 +71,13 @@ export default function CardRow({ row, categories }: CardRowProps) {
     setIsSubmitting(true);
     console.log("Submitting values:", values);
     try {
-      const response = await updatePaintings(values);
-      // if (response.statusCode === 200) {
-      //   console.log("Painting updated successfully:", response.data);
-      //   form.reset();
-      // } else {
-      //   console.error("Failed to update painting:", response.message);
-      // }
+      const response = await updatePaintings(values, data.paintingId);
+      if (response.statusCode === 200) {
+        console.log("Painting updated successfully:", response.data);
+        form.reset();
+      } else {
+        console.error("Failed to update painting:", response.message);
+      }
     } catch (error) {
       console.error("Submit error:", error);
     } finally {
