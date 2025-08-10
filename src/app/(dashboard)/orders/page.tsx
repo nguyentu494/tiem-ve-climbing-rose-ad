@@ -41,7 +41,7 @@ export default function OrdersPage() {
     <div className="container mx-auto overflow-x-auto">
       <AdminHeader items={menuHeaders} />
       <div className="p-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-end">
           <Label className="text-sm font-medium whitespace-nowrap">
             Sắp xếp:
           </Label>

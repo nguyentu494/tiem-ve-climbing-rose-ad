@@ -7,8 +7,9 @@ import { api } from "src/lib/axios";
 import { BaseResponseSchema } from "src/types/response/BaseResponse";
 
 const CategoryData = BaseResponseSchema(z.array(CategoryResponseSchema));
+export type CategoryData = z.infer<typeof CategoryData>;
 
-export const GetAllCategories = async (): Promise<CategoryResponse[]> => {
+export const GetAllCategories = async (): Promise<CategoryData> => {
   const response = await api.get("/categories");
 
   const parsed = CategoryData.safeParse(response.data);
@@ -17,5 +18,5 @@ export const GetAllCategories = async (): Promise<CategoryResponse[]> => {
     throw new Error("Failed to fetch categories");
   }
 
-  return parsed.data.data;
+  return parsed.data;
 };

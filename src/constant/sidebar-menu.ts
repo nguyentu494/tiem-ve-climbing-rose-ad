@@ -4,7 +4,12 @@ import {
   Command,
   Frame,
   LifeBuoy,
+  LogsIcon,
   Map,
+  NotebookIcon,
+  NotepadTextDashedIcon,
+  NotepadTextIcon,
+  Palette,
   PieChart,
   Send,
   Settings2,
@@ -19,9 +24,9 @@ export const sidebarData = {
   },
   navMain: [
     {
-      title: "Quản lý tranh",
+      title: "Quản lý Tranh",
       url: "/admin/paintings",
-      icon: SquareTerminal,
+      icon: Palette,
       isActive: true,
       // items: [
       //   { title: "", url: "#" },
@@ -30,9 +35,9 @@ export const sidebarData = {
       // ],
     },
     {
-      title: "Đơn hàng",
+      title: "Quản lý Đơn hàng",
       url: "/admin/orders",
-      icon: Bot,
+      icon: NotepadTextIcon,
       // items: [
       //   { title: "Genesis", url: "#" },
       //   { title: "Explorer", url: "#" },
@@ -40,9 +45,9 @@ export const sidebarData = {
       // ],
     },
     {
-      title: "Quản lý danh mục",
+      title: "Quản lý Danh mục",
       url: "/admin/categories",
-      icon: BookOpen,
+      icon: LogsIcon,
       // items: [
       //   { title: "Introduction", url: "#" },
       //   { title: "Get Started", url: "#" },

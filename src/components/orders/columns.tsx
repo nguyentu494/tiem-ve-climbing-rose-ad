@@ -56,6 +56,21 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "orderId",
     header: "Mã order",
+    cell: ({ row }) => {
+      const order = row.getValue("orderId");
+      return (
+        <div
+          className="flex items-center gap-2 w-24"
+          title={order as string}
+        >
+          <span className="font-medium">
+            {typeof order === "string" && order.length > 8
+              ? `${order.slice(0, 4)}...${order.slice(-5)}`
+              : String(order)}
+          </span>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "orderDate",

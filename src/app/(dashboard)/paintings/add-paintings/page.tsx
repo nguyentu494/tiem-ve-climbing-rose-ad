@@ -13,6 +13,7 @@ import { FormHelp } from "src/components/add-paintings/help";
 import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
 import { PaintingSize } from "src/constant/paintings-size";
+import { useCategories } from "src/hooks/useCategories";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import {
@@ -27,22 +28,12 @@ const menuHeaders: AdminHeaderProps[] = [
 
 export default function ImprovedAddPaintingsPage() {
   const router = useRouter();
-  const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDraft, setIsDraft] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const { fetchCategories, categories } = useCategories();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await GetAllCategories();
-        setCategories(response);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
-    fetchCategories();
-  }, []);
+    if (categories.length === 0) fetchCategories();
+  }, [fetchCategories]);
 
   const form = useForm<FormAddPaintings>({
     resolver: zodResolver(FormAddPaintingsSchema),
@@ -97,7 +88,7 @@ export default function ImprovedAddPaintingsPage() {
 
       <div className="min-h-screen bg-gray-50/50">
         <div className="max-w-full mx-auto px-4 py-6">
-          <PageHeader lastSaved={lastSaved ?? undefined} />
+          <PageHeader />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
             {/* Main Form */}
             <div className="lg:col-span-2 overflow-y-auto pr-4">
@@ -122,9 +113,7 @@ export default function ImprovedAddPaintingsPage() {
 
                 <FormActions
                   isSubmitting={isSubmitting}
-                  isDraft={isDraft}
                   onSubmit={form.handleSubmit(onSubmit)}
-                  saveDraft={saveDraft}
                 />
 
                 <FormHelp />

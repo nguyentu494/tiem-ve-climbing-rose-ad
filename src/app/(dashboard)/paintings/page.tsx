@@ -26,6 +26,8 @@ import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import { debounce } from "src/utils/Debounce";
 import loadingAnimation from "../../../../public/animation/loading-component.json";
 import { PaintingSize } from "src/constant/paintings-size";
+import { useCategories } from "src/hooks/useCategories";
+import { PlusIcon } from "lucide-react";
 
 const menuHeaders: AdminHeaderProps[] = [
   {
@@ -37,6 +39,7 @@ const menuHeaders: AdminHeaderProps[] = [
 
 export default function PaintingsPage() {
   const router = useRouter();
+  const { fetchCategories, categories } = useCategories();
 
   const [searchingParams, setSearchingParams] = React.useState<SearchingParams>(
     {
@@ -45,11 +48,14 @@ export default function PaintingsPage() {
       isActive: true,
     }
   );
-  const [categories, setCategories] = React.useState<CategoryResponse[]>([]);
   const [data, setData] = React.useState<PaintingsResponse | null>(null);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [keyword, setKeyword] = React.useState(searchingParams.keyword ?? "");
   const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (categories.length === 0) fetchCategories();
+  }, [fetchCategories]);
 
   const handleSearchChange = (value: string) => {
     setSearchingParams((prev) => ({ ...prev, search: value, page: 1 }));
@@ -148,31 +154,21 @@ export default function PaintingsPage() {
     return () => clearTimeout(timeout);
   }, [searchingParams]);
 
-  React.useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await api.get("/categories");
-        setCategories(response.data.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   return (
     <div>
       <AdminHeader items={menuHeaders} />
 
       <div className="container mx-auto py-0 flex flex-col">
-        <Button
-          onClick={() => {
-            router.push("/paintings/add-paintings");
-          }}
-          className="self-end mb-2"
-        >
-          + Thêm
-        </Button>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold ml-1">Danh sách tranh</h2>
+          <Button
+            className="flex items-center mr-4"
+            onClick={() => router.push("/paintings/add-paintings")}
+          >
+            <PlusIcon /> Thêm tranh
+          </Button>
+        </div>
         <div></div>
         <SearchPaintings
           searchParams={searchingParams}

@@ -28,6 +28,7 @@ import { AddPaintings, updatePaintings } from "src/api/paintings";
 import { usePaintingDetail } from "src/hooks/usePaintingDetail";
 import { formatCurrency } from "src/utils/FormatCurrency";
 import { PaintingSize } from "src/constant/paintings-size";
+import { PreviewImage } from "../ui/preview-image";
 
 type CardRowProps = {
   row: Row<AddPaintingsResponse>;
@@ -98,12 +99,7 @@ export default function CardRow({ row, categories }: CardRowProps) {
         {/* Hình ảnh nhỏ hơn */}
         <div className="flex justify-between w-full gap-3">
           <div className="relative w-18 h-18 shrink-0 rounded-lg overflow-hidden">
-            <Image
-              src={data.imageUrl}
-              alt={data.name}
-              fill
-              className="object-cover"
-            />
+            <PreviewImage src={data.imageUrl} alt={data.name} />
           </div>
           {/* Nội dung */}
           <div className="flex flex-col justify-between flex-1 gap-1">

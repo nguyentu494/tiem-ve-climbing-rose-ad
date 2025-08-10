@@ -7,16 +7,12 @@ import { useRouter } from "next/navigation";
 
 interface FormActionsProps {
   isSubmitting: boolean;
-  isDraft: boolean;
   onSubmit: () => void;
-  saveDraft: () => void;
 }
 
 export function FormActions({
   isSubmitting,
-  isDraft,
   onSubmit,
-  saveDraft,
 }: FormActionsProps) {
   const router = useRouter();
 
