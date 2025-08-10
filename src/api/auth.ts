@@ -25,3 +25,18 @@ export const Login = async (
 
   return parsed;
 };
+
+const Logout = async (): Promise<void> => {
+  const token = localStorage.getItem(LocalStorage.token);
+  if (!token) return;
+
+  try {
+    await api.post("/auth/logout", { token }); // Gửi dạng request body JSON
+  } catch (err) {
+    console.error("Logout failed:", err);
+  } finally {
+    localStorage.removeItem(LocalStorage.token);
+    localStorage.removeItem(LocalStorage.userId);
+  }
+};
+

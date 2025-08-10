@@ -36,6 +36,7 @@ export const AddPaintings = async (
     throw error;
   }
 };
+
 export const updatePaintings = async (
   data: FormAddPaintings,
   paintingId: string

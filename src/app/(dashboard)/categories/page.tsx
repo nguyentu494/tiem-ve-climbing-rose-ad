@@ -23,7 +23,7 @@ export default function CategoriesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (categories.length === 0) fetchCategories();
+    fetchCategories();
   }, [fetchCategories]);
 
   return (
