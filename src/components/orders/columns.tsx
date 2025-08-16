@@ -18,6 +18,7 @@ import {
 import { StatusSelectCell } from "./status-cell";
 import Image from "next/image";
 import { Order } from "src/types/response/OrderResponse";
+import { PreviewImage } from "../ui/preview-image";
 
 export const columns: ColumnDef<Order>[] = [
   {
@@ -127,10 +128,10 @@ export const columns: ColumnDef<Order>[] = [
       return (
         <div className="text-center hidden lg:block text-sm text-gray-500">
           {image ? (
-            <Image
+            <PreviewImage
               src={image as string}
               alt="Payment proof"
-              className="w-16 h-16 object-cover rounded-md mx-auto"
+              className="w-14  object-cover rounded-md mx-auto"
             />
           ) : (
             "Không có"

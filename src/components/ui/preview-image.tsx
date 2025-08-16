@@ -4,9 +4,10 @@ import { useState } from "react";
 interface PreviewImageProps {
   src: string | Blob;
   alt?: string;
+  className?: string;
 }
 
-export function PreviewImage({ src, alt }: PreviewImageProps) {
+export function PreviewImage({ src, alt, className }: PreviewImageProps) {
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
 
   return (
@@ -20,6 +21,7 @@ export function PreviewImage({ src, alt }: PreviewImageProps) {
           const url = typeof src === "string" ? src : URL.createObjectURL(src);
           setPreviewSrc(url);
         }}
+        className={className}
       />
 
       {/* Overlay preview */}
