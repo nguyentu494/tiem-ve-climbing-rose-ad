@@ -4,6 +4,7 @@ import { api } from "src/lib/axios";
 import { OrderParams } from "src/types/request/OrderParams";
 import { BaseResponseSchema } from "src/types/response/BaseResponse";
 import {
+  Order,
   OrderResponseSchema,
   OrderSchema,
 } from "src/types/response/OrderResponse";
@@ -11,7 +12,7 @@ import z from "zod";
 
 const OrdersResponse = BaseResponseSchema(OrderResponseSchema);
 
-type OrdersResponseType = z.infer<typeof OrdersResponse>;
+export type OrdersResponseType = z.infer<typeof OrdersResponse>;
 
 export const GetAllOrders = async (
   params?: OrderParams
@@ -85,6 +86,21 @@ export const GetOrderById = async (id: string): Promise<OrdersResponseType> => {
   try {
     const response = await api.get(`/orders/my-orders/${id}`);
     const parsed = OrdersResponse.safeParse(response.data);
+    if (!parsed.success) {
+      console.error("Error parsing orders response:", parsed.error);
+      throw new Error("Invalid orders response");
+    }
+    return parsed.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+export const GetOrderByOrderId = async (OrderId: string): Promise<Order> => {
+  try {
+    const response = await api.get(`/orders/admin/${OrderId}`);
+    const parsed = OrderSchema.safeParse(response.data.data);
     if (!parsed.success) {
       console.error("Error parsing orders response:", parsed.error);
       throw new Error("Invalid orders response");

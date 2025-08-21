@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingBag, Tag } from "lucide-react";
 import Image from "next/image";
+import { OrderItem } from "src/types/response/OrderResponse";
 
 interface OrderItemsProps {
-  items: any[];
+  items: OrderItem[];
 }
 
 export function OrderItems({ items }: OrderItemsProps) {
@@ -13,7 +14,7 @@ export function OrderItems({ items }: OrderItemsProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <ShoppingBag className="h-5 w-5 text-[oklch(0.808_0.114_19.571)]" />
-          Order Items ({items.length})
+          Sản phẩm trong đơn hàng ({items.length})
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -43,19 +44,6 @@ export function OrderItems({ items }: OrderItemsProps) {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {item.painting.categories.map((category: any) => (
-                    <Badge
-                      key={category.categoryId}
-                      variant="secondary"
-                      className="text-xs"
-                    >
-                      <Tag className="h-3 w-3 mr-1" />
-                      {category.name}
-                    </Badge>
-                  ))}
-                </div>
-
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
                     <span className="text-muted-foreground">Size:</span>
@@ -68,7 +56,7 @@ export function OrderItems({ items }: OrderItemsProps) {
                   <div>
                     <span className="text-muted-foreground">Unit Price:</span>
                     <p className="font-medium">
-                      ${item.currentPrice.toFixed(2)}
+                      ¥ {item.currentPrice.toFixed(2)}
                     </p>
                   </div>
                   <div>

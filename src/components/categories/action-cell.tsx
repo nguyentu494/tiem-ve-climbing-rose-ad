@@ -25,7 +25,7 @@ interface CategoryActionsCellProps {
 export function CategoryActionsCell({ category }: CategoryActionsCellProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { success } = useAppToast();
+  const { success, info } = useAppToast();
   const router = useRouter();
 
   const onDelete = () => {
@@ -35,9 +35,11 @@ export function CategoryActionsCell({ category }: CategoryActionsCellProps) {
       "Danh mục " + category.categoryId + " đã được xóa"
     );
     router.refresh();
+    setIsDialogOpen(false);
   };
 
   const onEdit = () => {
+    info("Đang chuyển sang trang chỉnh sửa danh mục", "Vui lòng đợi...");
     router.push(`/categories/${category.categoryId}/edit`);
   };
 

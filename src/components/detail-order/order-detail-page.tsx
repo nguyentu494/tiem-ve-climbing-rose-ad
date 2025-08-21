@@ -1,12 +1,13 @@
 import { OrderHeader } from "./order-header";
 import { OrderInfo } from "./order-info";
-import { OrderItems } from "./order-items";
 import { ShippingInfo } from "./shipping-info";
 import { PaymentInfo } from "./payment-info";
+import { Order } from "src/types/response/OrderResponse";
+import { OrderItems } from "./order-items";
 import { OrderSummary } from "./order-summary";
 
 interface OrderDetailPageProps {
-  orderData: any;
+  orderData: Order;
 }
 
 export function OrderDetailPage({ orderData }: OrderDetailPageProps) {

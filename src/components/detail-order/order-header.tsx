@@ -12,13 +12,13 @@ export function OrderHeader({ orderId, orderDate, status }: OrderHeaderProps) {
     switch (status.toLowerCase()) {
       case "pending":
         return "bg-[oklch(0.808_0.114_19.571)] text-white";
-      case "confirmed":
+      case "approved":
         return "bg-green-500 text-white";
-      case "shipped":
+      case "payed":
         return "bg-blue-500 text-white";
-      case "delivered":
-        return "bg-emerald-500 text-white";
       case "cancelled":
+        return "bg-gray-500 text-white";
+      case "rejected":
         return "bg-red-500 text-white";
       default:
         return "bg-gray-500 text-white";
@@ -39,7 +39,7 @@ export function OrderHeader({ orderId, orderDate, status }: OrderHeaderProps) {
     <div className="border-b border-border pb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Order Details</h1>
+          <h1 className="text-3xl font-bold text-foreground">Chi tiết đơn hàng</h1>
           <div className="flex items-center gap-2 mt-2 text-muted-foreground">
             <Package className="h-4 w-4" />
             <span className="font-mono text-sm">{orderId}</span>

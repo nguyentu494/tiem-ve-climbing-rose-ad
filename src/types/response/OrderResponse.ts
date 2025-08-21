@@ -40,5 +40,6 @@ export const OrderResponseSchema = z.object({
   totalItems: z.number().int().nonnegative(),
 });
 
+export type OrderItem = z.infer<typeof OrderItemSchema>;
 export type Order = z.infer<typeof OrderSchema>;
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;

@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Truck, User, Phone, Mail, MapPin } from "lucide-react";
+import { Order } from "src/types/response/OrderResponse";
 
 interface ShippingInfoProps {
-  orderData: any;
+  orderData: Order;
 }
 
 export function ShippingInfo({ orderData }: ShippingInfoProps) {
@@ -11,7 +12,7 @@ export function ShippingInfo({ orderData }: ShippingInfoProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Truck className="h-5 w-5 text-[oklch(0.808_0.114_19.571)]" />
-          Shipping Information
+          Thông tin giao hàng
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -20,7 +21,7 @@ export function ShippingInfo({ orderData }: ShippingInfoProps) {
             <div className="flex items-center gap-2">
               <User className="h-4 w-4 text-muted-foreground" />
               <div>
-                <span className="text-sm text-muted-foreground">Receiver:</span>
+                <span className="text-sm text-muted-foreground">Người nhận:</span>
                 <p className="font-medium">{orderData.receiverName}</p>
               </div>
             </div>
@@ -28,7 +29,7 @@ export function ShippingInfo({ orderData }: ShippingInfoProps) {
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-muted-foreground" />
               <div>
-                <span className="text-sm text-muted-foreground">Phone:</span>
+                <span className="text-sm text-muted-foreground">Số điện thoại:</span>
                 <p className="font-medium">{orderData.phone}</p>
               </div>
             </div>
@@ -46,9 +47,8 @@ export function ShippingInfo({ orderData }: ShippingInfoProps) {
             <div className="flex items-start gap-2">
               <MapPin className="h-4 w-4 text-muted-foreground mt-1" />
               <div>
-                <span className="text-sm text-muted-foreground">Address:</span>
+                <span className="text-sm text-muted-foreground">Địa chỉ:</span>
                 <div className="font-medium space-y-1">
-                  <p>{orderData.address}</p>
                   <p>
                     {orderData.town}, {orderData.city}
                   </p>

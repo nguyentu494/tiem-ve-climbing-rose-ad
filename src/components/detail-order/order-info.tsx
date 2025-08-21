@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText } from "lucide-react";
+import { Order } from "src/types/response/OrderResponse";
 
 interface OrderInfoProps {
-  orderData: any;
+  orderData: Order;
 }
 
 export function OrderInfo({ orderData }: OrderInfoProps) {
@@ -11,7 +12,7 @@ export function OrderInfo({ orderData }: OrderInfoProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-[oklch(0.808_0.114_19.571)]" />
-          Order Information
+          Thông tin đơn hàng
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -27,15 +28,15 @@ export function OrderInfo({ orderData }: OrderInfoProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h4 className="font-medium text-foreground mb-1">
-              Shipping Address
+              Địa chỉ giao hàng
             </h4>
             <p className="text-muted-foreground text-sm">
-              {orderData.shippingAddress}
+              {orderData.postalCode} {orderData.city}, {orderData.town} {orderData.addressDetail}
             </p>
           </div>
 
           <div>
-            <h4 className="font-medium text-foreground mb-1">Payment Method</h4>
+            <h4 className="font-medium text-foreground mb-1">Phương thức thanh toán</h4>
             <p className="text-muted-foreground text-sm">
               {orderData.paymentMethod}
             </p>
