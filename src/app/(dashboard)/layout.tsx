@@ -11,6 +11,8 @@ import { LocalStorage } from "src/lib/local-storage";
 import Lottie from "lottie-react";
 import loadingAnimation from "../../../public/animation/loading-page.json";
 import { useAuth } from "src/hooks/useAuth";
+import { Toaster } from "sonner";
+import { useAppToast } from "src/hooks/useToast";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -18,6 +20,8 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
+  const { warning } = useAppToast();
+
   const [isLoading, setIsLoading] = useState(false);
   const { loading, setLoading } = useAuth();
 
@@ -32,8 +36,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorage.token);
+    
     if (!token) {
       setIsLoading(false);
+      warning("Phiên đăng nhập đã hết hạn", "Vui lòng đăng nhập lại để tiếp tục.");
       router.push("/login");
     }
   }, [loading]);
@@ -56,6 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           ) : (
             <SidebarProvider>
               <AppSidebar />
+              <Toaster position="top-right" richColors closeButton />
               <SidebarInset>
                 <PageTransitionWrapper>{children}</PageTransitionWrapper>
               </SidebarInset>

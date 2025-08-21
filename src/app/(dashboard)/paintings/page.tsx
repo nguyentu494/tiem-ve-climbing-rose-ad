@@ -28,6 +28,7 @@ import loadingAnimation from "../../../../public/animation/loading-component.jso
 import { PaintingSize } from "src/constant/paintings-size";
 import { useCategories } from "src/hooks/useCategories";
 import { PlusIcon } from "lucide-react";
+import { useAppToast } from "src/hooks/useToast";
 
 const menuHeaders: AdminHeaderProps[] = [
   {
@@ -39,6 +40,8 @@ const menuHeaders: AdminHeaderProps[] = [
 
 export default function PaintingsPage() {
   const router = useRouter();
+  const { success } = useAppToast();
+
   const { fetchCategories, categories } = useCategories();
 
   const [searchingParams, setSearchingParams] = React.useState<SearchingParams>(
@@ -142,6 +145,7 @@ export default function PaintingsPage() {
       const response = await GetAllPaintings(searchingParams);
       setData(response);
       setIsLoading(false);
+      success("Lấy danh sách tranh thành công", "Danh sách tranh đã được cập nhật");
     };
     fetchData();
     const timeout = setTimeout(() => {

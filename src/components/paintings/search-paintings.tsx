@@ -51,6 +51,13 @@ interface ProductFilterBarProps {
   setSearchParams: React.Dispatch<React.SetStateAction<any>>;
 }
 
+const SIZE_LABELS: Record<string, string> = {
+  SIZE_20x20: "20x20 cm",
+  SIZE_30x40: "30x40 cm",
+  SIZE_40x50: "40x50 cm",
+  ART_SUPPLIES: "Kèm dụng cụ vẽ",
+};
+
 export default function SearchPaintings({
   searchParams,
   categories,
@@ -157,13 +164,14 @@ export default function SearchPaintings({
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="justify-between min-w-[120px] bg-transparent"
+                  className="justify-between min-w-[80px] bg-transparent"
                 >
                   {searchParams.sizes && searchParams.sizes.length > 0 ? (
                     <span className="truncate">
                       {searchParams.sizes.length === 1
-                        ? searchParams.sizes[0]
-                        : `${searchParams.sizes.length} size`}
+                        ? SIZE_LABELS[searchParams.sizes[0]] ??
+                          searchParams.sizes[0]
+                        : `${searchParams.sizes.length} lựa chọn`}
                     </span>
                   ) : (
                     "Chọn size"
@@ -171,16 +179,13 @@ export default function SearchPaintings({
                   <ChevronDown className="h-4 w-4 ml-2 shrink-0" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-64 p-4">
-                <div className="grid grid-cols-3 gap-2">
+              <PopoverContent className="w-64 p-4 max-h-60 overflow-y-auto">
+                <div className="grid grid-cols-2 gap-2">
                   {availableSizes.map((size) => (
                     <div key={size} className="flex items-center space-x-2">
                       <Checkbox
                         id={`size-${size}`}
-                        checked={
-                          searchParams.sizes &&
-                          searchParams.sizes.includes(size)
-                        }
+                        checked={searchParams.sizes?.includes(size)}
                         onCheckedChange={(checked) =>
                           handleSizeChange(size, checked as boolean)
                         }
@@ -189,7 +194,7 @@ export default function SearchPaintings({
                         htmlFor={`size-${size}`}
                         className="text-sm cursor-pointer"
                       >
-                        {size}
+                        {SIZE_LABELS[size] ?? size}
                       </Label>
                     </div>
                   ))}

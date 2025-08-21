@@ -166,3 +166,16 @@
   display: none !important;
   content: none !important;
 }
+
+.toaster [data-type="success"] {
+  background: #16a34a; /* xanh lá */
+  color: white;
+}
+.toaster [data-type="error"] {
+  background: #dc2626; /* đỏ */
+  color: white;
+}
+.toaster [data-type="info"] {
+  background: #2563eb; /* xanh dương */
+  color: white;
+}

@@ -1,7 +1,10 @@
 import axios from "axios";
 import { LocalStorage } from "./local-storage";
+import { useAppToast } from "src/hooks/useToast";
 // import { addToast } from "@heroui/toast";
 
+
+const { warning } = useAppToast();
 export interface ErrorResponse {
   error: string;
   message: string;
@@ -66,9 +69,10 @@ api.interceptors.response.use(
       // 	description: "Vui lòng đăng nhập lại",
       // 	color: "danger",
       // });
+      warning("Phiên đăng nhập đã hết hạn", "Vui lòng đăng nhập lại");
       localStorage.removeItem(LocalStorage.userId);
       localStorage.removeItem(LocalStorage.token);
-      window.location.href = "/admin/login";
+      window.location.href = "/admin/login"; 
     }
 
     return Promise.reject(errorResponse);

@@ -14,6 +14,7 @@ import { PreviewCard } from "src/components/add-paintings/preview-card";
 import { AdminHeader } from "src/components/layout/admin-header";
 import { PaintingSize } from "src/constant/paintings-size";
 import { useCategories } from "src/hooks/useCategories";
+import { useAppToast } from "src/hooks/useToast";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 import {
@@ -28,6 +29,8 @@ const menuHeaders: AdminHeaderProps[] = [
 
 export default function ImprovedAddPaintingsPage() {
   const router = useRouter();
+  const { success, errorToast } = useAppToast();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { fetchCategories, categories } = useCategories();
 
@@ -55,13 +58,15 @@ export default function ImprovedAddPaintingsPage() {
     try {
       const response = await AddPaintings(values);
       if (response.statusCode === 200) {
-        console.log("Painting added successfully:", response.data);
+        success("Thêm tranh thành công", "Tranh " + values.name + " đã được thêm");
         form.reset();
       } else {
         console.error("Failed to add painting:", response.message);
+        errorToast("Có lỗi xảy ra", "Vui lòng kiểm tra lại thông tin");
       }
     } catch (error) {
       console.error("Submit error:", error);
+      errorToast("Có lỗi xảy ra", "Vui lòng kiểm tra lại thông tin");
     } finally {
       setIsSubmitting(false);
     }

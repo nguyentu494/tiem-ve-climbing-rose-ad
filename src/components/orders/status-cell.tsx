@@ -5,6 +5,8 @@ import Lottie from "lottie-react";
 import loadingAnimation from "../../../public/animation/loading-component.json";
 import React from "react";
 import { useOrders } from "src/hooks/useOrders";
+import { toast } from "sonner";
+import { useAppToast } from "src/hooks/useToast";
 type Props = {
   orderId: string;
   status: keyof typeof OrderStatusInfo;
@@ -14,8 +16,10 @@ type Props = {
 export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { updateOrderStatusInTable } = useOrders();
+  const { success, errorToast, info } = useAppToast();
 
   const show = OrderStatusInfo[status ?? "PENDING"];
+  console.log(status, "hjh");
 
   const handleStatusChange = async (value: string) => {
     try {
@@ -29,9 +33,15 @@ export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
           orderId,
           value as keyof typeof OrderStatusInfo
         );
+        success("Cập nhật trạng thái đơn hàng thành công", "Đơn hàng " + orderId + " đã được cập nhật");
+        return;
       }
     } catch (error) {
       console.error("Error updating order status:", error);
+      errorToast(
+        "Cập nhật trạng thái đơn hàng không thành công",
+        "Đơn hàng " + orderId + " không được cập nhật"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -59,8 +69,24 @@ export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
             {show.label}
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="APPROVED">Duyệt đơn</SelectItem>
-            <SelectItem value="REJECTED">Từ chối</SelectItem>
+            <SelectItem
+              value="APPROVED"
+              className={`${status === "PAYED" ? "block" : "hidden"}`}
+            >
+              Duyệt đơn
+            </SelectItem>
+            <SelectItem
+              value="REJECTED"
+              className={`${status === "PAYED" ? "block" : "hidden"}`}
+            >
+              Từ chối
+            </SelectItem>
+            <SelectItem
+              value="CANCELED"
+              className={`${status === "PENDING" ? "block" : "hidden"}`}
+            >
+              Hủy đơn
+            </SelectItem>
           </SelectContent>
         </Select>
       )}

@@ -19,10 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React from "react";
+import React, { useState } from "react";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -38,6 +36,7 @@ export function DataTable<TData extends CategoryResponse, TValue>({
     { id: "createdAt", desc: true },
   ]);
   const [rowSelection, setRowSelection] = React.useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -47,7 +46,7 @@ export function DataTable<TData extends CategoryResponse, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: setRowSelection,   
     state: {
       sorting,
       rowSelection,
@@ -127,7 +126,7 @@ export function DataTable<TData extends CategoryResponse, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

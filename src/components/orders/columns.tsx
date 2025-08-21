@@ -148,7 +148,6 @@ export const columns: ColumnDef<Order>[] = [
       const orderId = row.getValue("orderId") as string;
 
       const isDisabled =
-        status === "PENDING" ||
         status === "REJECTED" ||
         status === "CANCELED" ||
         status === "APPROVED";
