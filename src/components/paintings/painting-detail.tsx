@@ -41,6 +41,7 @@ export default function DetailPaintings({
         description: painting.description,
         size: painting.size,
         price: painting.price,
+        active: painting.active,
         quantity: painting.quantity,
         imageUrl: painting.imageUrl,
         categoryIds: painting.categories ? painting.categories.map((category) => category.categoryId) : [],

@@ -13,12 +13,14 @@ import {
 } from "../ui/form";
 import { CurrencyInput } from "../ui/currency-input";
 import { Input } from "../ui/input";
+import { Switch } from "../ui/switch"; // ✅ import thêm
 
 interface PaintingBasicInfoProps {
   painting: AddPaintingsResponse;
   form: UseFormReturn<FormAddPaintings>;
   isSubmitting: boolean;
 }
+
 export function PaintingBasicInfo({
   painting,
   form,
@@ -54,13 +56,11 @@ export function PaintingBasicInfo({
                   <FormControl>
                     <Input
                       {...field}
-                      value={field.value}
-                      onChange={field.onChange}
                       disabled={isSubmitting}
                       placeholder="Nhập tên tranh"
                     />
                   </FormControl>
-                      <FormMessage />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -78,13 +78,35 @@ export function PaintingBasicInfo({
                   <FormControl>
                     <Input
                       {...field}
-                      value={field.value}
-                      onChange={field.onChange}
                       disabled={isSubmitting}
                       placeholder="Nhập mô tả chi tiết"
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div>
+            <FormField
+              control={form.control}
+              name="active"
+              render={({ field }) => (
+                <FormItem className="flex items-center justify-between rounded-lg border p-3">
+                  <div className="space-y-0.5">
+                    <FormLabel>Kích hoạt tranh</FormLabel>
+                    <FormDescription>
+                      Bật / tắt trạng thái tranh.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

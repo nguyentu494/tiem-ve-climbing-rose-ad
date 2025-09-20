@@ -13,9 +13,12 @@ export interface ErrorResponse {
   path: string;
 }
 
+// Request timeout in milliseconds
+const REQUEST_TIMEOUT_MS = 60_000;
+
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API,
-  timeout: 60000,
+  timeout: REQUEST_TIMEOUT_MS,
   timeoutErrorMessage: "Thời gian chờ kết nối quá lâu",
   headers: { "Content-Type": "application/json" },
 });
@@ -55,8 +58,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // console.log(error)
-
     if (!error.response) {
       return Promise.reject(error);
     }

@@ -1,11 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
-import {
-  GetOrderById,
-  GetOrderByOrderId,
-  OrdersResponseType,
-} from "src/api/orders";
+import { GetOrderByOrderId } from "src/api/orders";
 import { OrderDetailPage } from "src/components/detail-order/order-detail-page";
 import { AdminHeader } from "src/components/layout/admin-header";
 import { Order } from "src/types/response/OrderResponse";
@@ -25,7 +21,6 @@ export default function DetailOrder({
       try {
         const data = await GetOrderByOrderId(orderId);
         setOrderData(data);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching order data:", error);
       }

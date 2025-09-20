@@ -56,6 +56,18 @@ export default function PaintingsPage() {
   const [keyword, setKeyword] = React.useState(searchingParams.keyword ?? "");
   const [isLoading, setIsLoading] = React.useState(true);
 
+  const refetchPaintings = React.useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await GetAllPaintings(searchingParams);
+      console.log(response);
+      setData(response);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchingParams]);
+
+
   React.useEffect(() => {
     if (categories.length === 0) fetchCategories();
   }, [fetchCategories]);
@@ -141,13 +153,7 @@ export default function PaintingsPage() {
   React.useEffect(() => {
     // Fetch data from API or any other source
     setIsLoading(true);
-    const fetchData = async () => {
-      const response = await GetAllPaintings(searchingParams);
-      setData(response);
-      setIsLoading(false);
-      success("Lấy danh sách tranh thành công", "Danh sách tranh đã được cập nhật");
-    };
-    fetchData();
+    refetchPaintings();
     const timeout = setTimeout(() => {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
@@ -209,6 +215,7 @@ export default function PaintingsPage() {
             columns={columns}
             data={data?.items || []}
             categories={categories}
+            refetchPaintings={refetchPaintings}
           />
         )}
 

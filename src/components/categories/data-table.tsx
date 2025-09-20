@@ -22,6 +22,7 @@ import {
 import React, { useState } from "react";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
+import { DEFAULT_PAGE_SIZE } from "src/constant/pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,7 +55,8 @@ export function DataTable<TData extends CategoryResponse, TValue>({
   });
 
   React.useEffect(() => {
-    table.setPageSize(8);
+    // Use shared default page size to avoid magic numbers
+    table.setPageSize(DEFAULT_PAGE_SIZE);
   }, []);
 
   return (

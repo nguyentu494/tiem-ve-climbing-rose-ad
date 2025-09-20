@@ -1,5 +1,5 @@
 import { Select, SelectTrigger, SelectContent, SelectItem } from "../ui/select";
-import { OrderStatusInfo } from "src/constant/order-status";
+import { ORDER_STATUS, OrderStatusInfo } from "src/constant/order-status";
 import { updateOrderStatus } from "src/api/orders";
 import Lottie from "lottie-react";
 import loadingAnimation from "../../../public/animation/loading-component.json";
@@ -13,13 +13,33 @@ type Props = {
   disabled: boolean;
 };
 
+// Build available status options based on current status
+function getNextStatusOptions(currentStatus: keyof typeof OrderStatusInfo) {
+  return [
+    {
+      value: ORDER_STATUS.APPROVED,
+      label: "Duyệt đơn",
+      visible: currentStatus === ORDER_STATUS.PAYED,
+    },
+    {
+      value: ORDER_STATUS.REJECTED,
+      label: "Từ chối",
+      visible: currentStatus === ORDER_STATUS.PAYED,
+    },
+    {
+      value: ORDER_STATUS.CANCELED,
+      label: "Hủy đơn",
+      visible: currentStatus === ORDER_STATUS.PENDING,
+    },
+  ];
+}
+
 export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { updateOrderStatusInTable } = useOrders();
   const { success, errorToast, info } = useAppToast();
 
-  const show = OrderStatusInfo[status ?? "PENDING"];
-  console.log(status, "hjh");
+  const show = OrderStatusInfo[status ?? ORDER_STATUS.PENDING];
 
   const handleStatusChange = async (value: string) => {
     try {
@@ -69,24 +89,15 @@ export const StatusSelectCell = ({ orderId, status, disabled }: Props) => {
             {show.label}
           </SelectTrigger>
           <SelectContent>
-            <SelectItem
-              value="APPROVED"
-              className={`${status === "PAYED" ? "block" : "hidden"}`}
-            >
-              Duyệt đơn
-            </SelectItem>
-            <SelectItem
-              value="REJECTED"
-              className={`${status === "PAYED" ? "block" : "hidden"}`}
-            >
-              Từ chối
-            </SelectItem>
-            <SelectItem
-              value="CANCELED"
-              className={`${status === "PENDING" ? "block" : "hidden"}`}
-            >
-              Hủy đơn
-            </SelectItem>
+            {getNextStatusOptions(status).map((opt) => (
+              <SelectItem
+                key={opt.value}
+                value={opt.value}
+                className={opt.visible ? "block" : "hidden"}
+              >
+                {opt.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       )}

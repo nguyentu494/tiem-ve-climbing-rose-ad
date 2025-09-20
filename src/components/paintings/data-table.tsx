@@ -2,48 +2,31 @@
 
 import {
   ColumnDef,
-  ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  useReactTable,
-  VisibilityState,
+  useReactTable
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "../ui/button";
 import React from "react";
-import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import CardRow from "./card-row";
 import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
+import CardRow from "./card-row";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   categories?: CategoryResponse[];
+  refetchPaintings: () => void;
 }
 
 export function DataTable<TData extends AddPaintingsResponse, TValue>({
   columns,
   data,
   categories,
+  refetchPaintings,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -154,7 +137,7 @@ export function DataTable<TData extends AddPaintingsResponse, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <div key={row.id} className="border-b p-2">
-                <CardRow row={row} categories={categories ?? []} />
+                <CardRow row={row} categories={categories ?? []} onDelete={refetchPaintings} />
               </div>
             ))
           ) : (

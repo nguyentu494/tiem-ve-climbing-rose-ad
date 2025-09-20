@@ -45,7 +45,6 @@ export const useAuthStore = create<AuthState>()(
           if (token) {
             await Logout();
           }
-          console.log("Logout successful");
           set({
             user: null,
             isAuthenticated: false,

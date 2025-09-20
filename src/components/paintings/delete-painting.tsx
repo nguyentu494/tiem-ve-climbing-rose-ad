@@ -11,19 +11,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
 
-interface DeleteCategoryDialogProps {
+interface DeletePaintingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  categoryName: string;
+  paintingName: string;
 }
 
-export function DeleteCategoryDialog({
+export function DeletePaintingDialog({
   isOpen,
   onClose,
   onConfirm,
-  categoryName,
-}: DeleteCategoryDialogProps) {
+  paintingName,
+}: DeletePaintingDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -34,7 +34,7 @@ export function DeleteCategoryDialog({
             </div>
             <div>
               <DialogTitle className="text-left">
-                Xác nhận xóa danh mục
+                Xác nhận xóa tranh
               </DialogTitle>
               <DialogDescription className="text-left">
                 Hành động này không thể hoàn tác
@@ -47,8 +47,8 @@ export function DeleteCategoryDialog({
           <p className="text-sm text-muted-foreground">
             Bạn có chắc chắn muốn xóa danh mục{" "}
             <span className="font-semibold text-foreground">
-              "{categoryName}"
-            </span>
+              "{paintingName}"
+            </span>{" "}
             không? Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn.
           </p>
         </div>
@@ -62,7 +62,7 @@ export function DeleteCategoryDialog({
             Hủy bỏ
           </Button>
           <Button variant="destructive" onClick={onConfirm}>
-            Xóa danh mục
+            Xóa tranh
           </Button>
         </DialogFooter>
       </DialogContent>

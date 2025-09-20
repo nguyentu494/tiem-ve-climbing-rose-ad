@@ -6,6 +6,7 @@ export const AddPaintingsResponseSchema = z.object({
   paintingId: z.string(),
   name: z.string().min(1, "Tên không được để trống"),
   description: z.string(),
+  active: z.boolean().default(true),
   imageUrl: z.string().url("URL hình ảnh không hợp lệ"),
   size: z.enum(PaintingSize, "Kích thước không hợp lệ"),
   price: z.number().positive("Giá phải lớn hơn 0"),

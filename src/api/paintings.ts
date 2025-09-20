@@ -102,3 +102,13 @@ export const GetAllPaintings = async (
     throw error;
   }
 };
+
+
+export const DeletePainting = async (paintingId: string): Promise<void> => {
+  try {
+    await api.delete(`/paintings/delete/${paintingId}`);
+  } catch (error) {
+    console.error("Error deleting painting:", error);
+    throw error;
+  }
+};

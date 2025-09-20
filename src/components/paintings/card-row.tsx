@@ -1,7 +1,6 @@
 import { Row } from "@tanstack/react-table";
 import { AddPaintingsResponse } from "src/types/response/AddPaintingsResponse";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -17,36 +16,61 @@ import { Checkbox } from "../ui/checkbox";
 import { Sheet, SheetTrigger } from "../ui/sheet";
 import DetailPaintings from "./painting-detail";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   FormAddPaintings,
   FormAddPaintingsSchema,
 } from "src/types/ui/FormAddPaintings";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddPaintings, updatePaintings } from "src/api/paintings";
+import { DeletePainting, updatePaintings } from "src/api/paintings";
 import { usePaintingDetail } from "src/hooks/usePaintingDetail";
 import { formatCurrency } from "src/utils/FormatCurrency";
 import { PaintingSize } from "src/constant/paintings-size";
 import { PreviewImage } from "../ui/preview-image";
+import { useAppToast } from "src/hooks/useToast";
+import { useRouter } from "next/navigation";
+import { is } from "zod/v4/locales";
+import { DeletePaintingDialog } from "./delete-painting";
 
 type CardRowProps = {
   row: Row<AddPaintingsResponse>;
   categories: CategoryResponse[];
+  onDelete: () => void;
 };
 
-export default function CardRow({ row, categories }: CardRowProps) {
+export default function CardRow({ row, categories, onDelete }: CardRowProps) {
   const data = row.original;
   const { setPainting, clear } = usePaintingDetail();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { success, info } = useAppToast();
+  const router = useRouter();
+
+  const onDeletePainting = () => {
+    DeletePainting(data.paintingId);
+    success(
+      "Xóa tranh thành công",
+      "Tranh " + data.paintingId + " đã được xóa"
+    );
+    setIsDialogOpen(false);
+    onDelete()
+  };
+
+  const onEdit = () => {
+    handleRowClick(data);
+    setIsOpen(true);
+  };
 
   const form = useForm<FormAddPaintings>({
     resolver: zodResolver(FormAddPaintingsSchema),
     defaultValues: {
       name: "",
       description: "",
+      active: true,
       imageUrl: undefined,
       size: PaintingSize.SIZE_20x20,
       price: 0,
@@ -70,12 +94,14 @@ export default function CardRow({ row, categories }: CardRowProps) {
 
   const onSubmit = async (values: FormAddPaintings) => {
     setIsSubmitting(true);
-    console.log("Submitting values:", values);
     try {
+      console.log("Submitting values:", values);
       const response = await updatePaintings(values, data.paintingId);
       if (response.statusCode === 200) {
-        console.log("Painting updated successfully:", response.data);
+        success("Cập nhật tranh thành công", "Tranh đã được cập nhật");
         form.reset();
+        clear();
+        setIsOpen(false);
       } else {
         console.error("Failed to update painting:", response.message);
       }
@@ -88,6 +114,12 @@ export default function CardRow({ row, categories }: CardRowProps) {
 
   return (
     <div className="flex items-center justify-between">
+      <DeletePaintingDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={onDeletePainting}
+        paintingName={data.name}
+      />
       <div className="shrink-0 mr-4">
         <Checkbox
           checked={row.getIsSelected()}
@@ -123,9 +155,7 @@ export default function CardRow({ row, categories }: CardRowProps) {
               <Badge variant="secondary" className="text-xs">
                 Số lượng: {data.quantity}
               </Badge>
-              {
-              data.categories &&
-              data.categories?.length > 0 ? (
+              {data.categories && data.categories?.length > 0 ? (
                 data.categories.map((catId) => (
                   <Badge
                     key={catId.categoryId}
@@ -175,15 +205,16 @@ export default function CardRow({ row, categories }: CardRowProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() => navigator.clipboard.writeText(data.paintingId)}
-                >
-                  Copy painting ID
+                <DropdownMenuItem onClick={() => onEdit()}>
+                  Xem chi tiết tranh
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>View customer</DropdownMenuItem>
-                <DropdownMenuItem>View painting details</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-red-500"
+                  onClick={() => setIsDialogOpen(true)}
+                >
+                  Xóa tranh
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

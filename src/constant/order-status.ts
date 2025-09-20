@@ -1,5 +1,14 @@
 export type OrderStatus = 'PENDING' | 'APPROVED' | 'PAYED' | 'REJECTED' | 'CANCELED';
 
+// Centralized status constants to avoid typos and enable reuse
+export const ORDER_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  PAYED: 'PAYED',
+  REJECTED: 'REJECTED',
+  CANCELED: 'CANCELED',
+} as const;
+
 export const OrderStatusInfo: Record<
   OrderStatus,
   { label: string; color: string; bgColor: string }
