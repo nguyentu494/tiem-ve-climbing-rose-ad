@@ -50,14 +50,14 @@ export default function CardRow({ row, categories, onDelete }: CardRowProps) {
   const { success, info } = useAppToast();
   const router = useRouter();
 
-  const onDeletePainting = () => {
-    DeletePainting(data.paintingId);
+  const onDeletePainting = async () => {
+    await DeletePainting(data.paintingId);
     success(
       "Xóa tranh thành công",
       "Tranh " + data.paintingId + " đã được xóa"
     );
+    await onDelete();
     setIsDialogOpen(false);
-    onDelete()
   };
 
   const onEdit = () => {
@@ -95,7 +95,6 @@ export default function CardRow({ row, categories, onDelete }: CardRowProps) {
   const onSubmit = async (values: FormAddPaintings) => {
     setIsSubmitting(true);
     try {
-      console.log("Submitting values:", values);
       const response = await updatePaintings(values, data.paintingId);
       if (response.statusCode === 200) {
         success("Cập nhật tranh thành công", "Tranh đã được cập nhật");

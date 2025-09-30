@@ -60,7 +60,6 @@ export default function PaintingsPage() {
     setIsLoading(true);
     try {
       const response = await GetAllPaintings(searchingParams);
-      console.log(response);
       setData(response);
     } finally {
       setIsLoading(false);
