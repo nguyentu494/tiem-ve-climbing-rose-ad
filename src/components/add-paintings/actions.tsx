@@ -22,7 +22,7 @@ export function FormActions({
         <div className="space-y-3">
           <Button
             type="submit"
-            onClick={onSubmit}
+            onClick={() => onSubmit()}
             disabled={isSubmitting}
             className="w-full"
             size="lg"

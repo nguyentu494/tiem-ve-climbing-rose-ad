@@ -23,8 +23,8 @@ import {
 } from "src/types/ui/FormAddPaintings";
 
 const menuHeaders: AdminHeaderProps[] = [
-  { label: "Quản lý tranh", href: "/paintings", isCurrent: false },
-  { label: "Thêm mới", href: "/paintings/add-paintings", isCurrent: true },
+  { label: "Quản lý tranh", href: "/admin/paintings", isCurrent: false },
+  { label: "Thêm mới", href: "/admin/paintings/add-paintings", isCurrent: true },
 ];
 
 export default function ImprovedAddPaintingsPage() {
@@ -118,7 +118,7 @@ export default function ImprovedAddPaintingsPage() {
 
                 <FormActions
                   isSubmitting={isSubmitting}
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={() => onSubmit(form.getValues())}
                 />
 
                 <FormHelp />

@@ -58,7 +58,7 @@ export function PreviewCard({
           <h3 className="font-semibold text-lg">{name || "Tên tranh"}</h3>
           {price && price > 0 && (
             <p className="text-2xl font-bold text-primary">
-              {formatCurrency(price)} ¥
+              {formatCurrency(price)}
             </p>
           )}
           {size && (
