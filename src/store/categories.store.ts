@@ -1,9 +1,6 @@
 // src/store/orders/orders.store.ts
 import { GetAllCategories } from "src/api/categories";
-import { GetAllOrders } from "src/api/orders";
-import { OrderParams } from "src/types/request/OrderParams";
 import { CategoryResponse } from "src/types/response/CategoryResponse";
-import { OrderResponse } from "src/types/response/OrderResponse";
 import { create } from "zustand";
 
 interface CategoriesState {

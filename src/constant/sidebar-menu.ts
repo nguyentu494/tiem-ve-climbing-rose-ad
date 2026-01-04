@@ -25,9 +25,9 @@ export const sidebarData = {
   navMain: [
     {
       title: "Quản lý Tranh",
-      url: "/admin/paintings",
+      url: "/paintings",
       icon: Palette,
-      isActive: true,
+      isActive: false,
       // items: [
       //   { title: "", url: "#" },
       //   { title: "Starred", url: "#" },
@@ -36,8 +36,9 @@ export const sidebarData = {
     },
     {
       title: "Quản lý Đơn hàng",
-      url: "/admin/orders",
+      url: "/orders",
       icon: NotepadTextIcon,
+      isActive: true,
       // items: [
       //   { title: "Genesis", url: "#" },
       //   { title: "Explorer", url: "#" },
@@ -46,7 +47,7 @@ export const sidebarData = {
     },
     {
       title: "Quản lý Danh mục",
-      url: "/admin/categories",
+      url: "/categories",
       icon: LogsIcon,
       // items: [
       //   { title: "Introduction", url: "#" },
@@ -68,7 +69,7 @@ export const sidebarData = {
     // },
   ],
 };
-  
+
 
 
 

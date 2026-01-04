@@ -16,6 +16,8 @@ export const Login = async (
 
   const response = await api.post("/auth/login", values);
 
+  console.log(response.data);
+
   const parsed = LoginResponseSchema.parse(response.data);
 
   if(parsed.statusCode === 200) {

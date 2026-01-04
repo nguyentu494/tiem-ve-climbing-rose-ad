@@ -32,12 +32,12 @@ export default function DetailOrder({
   const menuHeaders: AdminHeaderProps[] = [
     {
       label: "Quản lý đơn hàng",
-      href: "/admin/orders",
+      href: "/orders",
       isCurrent: false,
     },
     {
       label: `Chi tiết đơn hàng`,
-      href: `/admin/orders/${orderId}`,
+      href: `/orders/${orderId}`,
       isCurrent: true,
     },
   ];

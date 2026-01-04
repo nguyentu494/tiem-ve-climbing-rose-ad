@@ -33,7 +33,7 @@ import { useAppToast } from "src/hooks/useToast";
 const menuHeaders: AdminHeaderProps[] = [
   {
     label: "Quản lý tranh",
-    href: "/admin/paintings",
+    href: "/paintings",
     isCurrent: true,
   },
 ];

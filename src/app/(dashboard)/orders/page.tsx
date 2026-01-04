@@ -17,7 +17,7 @@ import { AdminHeaderProps } from "src/types/ui/AdminHeader";
 const menuHeaders: AdminHeaderProps[] = [
   {
     label: "Quản lý đơn hàng",
-    href: "/admin/orders",
+    href: "/orders",
     isCurrent: true,
   },
 ];

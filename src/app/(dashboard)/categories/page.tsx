@@ -14,7 +14,7 @@ import { useAppToast } from "src/hooks/useToast";
 const menuHeaders: AdminHeaderProps[] = [
   {
     label: "Quản lý Danh mục",
-    href: "/admin/categories",
+    href: "/categories",
     isCurrent: true,
   },
 ];
