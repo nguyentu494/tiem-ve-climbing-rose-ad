@@ -1,8 +1,8 @@
 
 
+
 // src/stores/auth.store.ts
-import { LogOut } from "lucide-react";
-import { Login, Logout } from "src/api/auth";
+import { Logout } from "src/api/auth";
 import { api } from "src/lib/axios";
 import { LocalStorage } from "src/lib/local-storage";
 import { UserResponse } from "src/types/response/UserResponse";
@@ -15,7 +15,7 @@ type AuthState = {
   loading: boolean;
 
   setLoading: (loading: boolean) => void;
-  login: ( user: UserResponse) => void;
+  login: (user: UserResponse) => void;
   logout: () => Promise<void>;
   loadFromStorage: () => void;
 };
@@ -70,8 +70,6 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
-      skipHydration: true,
     }
   )
 );
-

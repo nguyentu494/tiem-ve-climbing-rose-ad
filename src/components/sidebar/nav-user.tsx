@@ -20,10 +20,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Logout } from "src/api/auth";
-import loadingAnimation from "../../../public/animation/loading-component.json";
 import Lottie from "lottie-react";
 import { useAuth } from "src/hooks/useAuth";
-import { set } from "zod";
 
 export function NavUser({
   user,
@@ -39,11 +37,15 @@ export function NavUser({
   const { logout, setLoading } = useAuth();
 
   const handleLogout = async () => {
-    setLoading(true);
-    await logout();
-    // setTimeout(() => {
-    //   route.push("/login");
-    // }, 1000);
+    // Clear token immediately
+    localStorage.removeItem("_Token");
+    localStorage.removeItem("auth-storage");
+
+    // Logout API in background
+    logout();
+
+    // Redirect immediately
+    window.location.href = "/login";
   };
 
   return (

@@ -46,11 +46,12 @@ export function LoginForm({
       if (response) {
         router.push("/paintings");
       } else {
-        
         // Handle error
       }
     } catch (error) {
       // Handle error
+    } finally {
+      setLoading(false);
     }
   };
 

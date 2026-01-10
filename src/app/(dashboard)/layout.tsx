@@ -22,27 +22,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
   const { warning } = useAppToast();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { loading, setLoading } = useAuth();
 
   useEffect(() => {
-    setIsLoading(false);
     const token = localStorage.getItem(LocalStorage.token);
     if (!token) {
       router.replace("/login");
-    }
-    setIsLoading(true);
-  }, [router]);
-
-  useEffect(() => {
-    const token = localStorage.getItem(LocalStorage.token);
-    
-    if (!token) {
+    } else {
       setIsLoading(false);
-      warning("Phiên đăng nhập đã hết hạn", "Vui lòng đăng nhập lại để tiếp tục.");
-      router.push("/login");
     }
-  }, [loading]);
+  }, [router]);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -54,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          {isLoading === false || loading ? (
+          {isLoading || loading ? (
             <div className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm flex items-center justify-center flex-col gap-4">
               <Lottie animationData={loadingAnimation} loop size={12} />
               <p className="text-sm text-primary">Đang tải...</p>

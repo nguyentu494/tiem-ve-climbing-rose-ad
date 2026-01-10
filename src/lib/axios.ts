@@ -1,10 +1,6 @@
 import axios from "axios";
 import { LocalStorage } from "./local-storage";
-import { useAppToast } from "src/hooks/useToast";
 // import { addToast } from "@heroui/toast";
-
-
-const { warning } = useAppToast();
 export interface ErrorResponse {
   error: string;
   message: string;

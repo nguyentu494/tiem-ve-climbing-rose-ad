@@ -38,6 +38,27 @@ const menuHeaders: AdminHeaderProps[] = [
   },
 ];
 
+// Helper function to calculate pagination range (max 5 pages)
+const getPaginationRange = (currentPage: number, totalPages: number) => {
+  const maxVisible = 5;
+
+  if (totalPages <= maxVisible) {
+    // If total pages <= 5, show all pages
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  // Calculate start and end of the range
+  let start = Math.max(1, currentPage - 2);
+  let end = Math.min(totalPages, start + maxVisible - 1);
+
+  // Adjust start if we're near the end
+  if (end - start < maxVisible - 1) {
+    start = Math.max(1, end - maxVisible + 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+};
+
 export default function PaintingsPage() {
   const router = useRouter();
   const { success } = useAppToast();
@@ -151,34 +172,30 @@ export default function PaintingsPage() {
 
   React.useEffect(() => {
     // Fetch data from API or any other source
-    setIsLoading(true);
     refetchPaintings();
-    const timeout = setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    }, 200);
 
-    return () => clearTimeout(timeout);
+    // Smooth scroll to top when page changes
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [searchingParams]);
 
 
   return (
-    <div>
+    <div className="container mx-auto overflow-x-auto">
       <AdminHeader items={menuHeaders} />
 
-      <div className="container mx-auto py-0 flex flex-col">
+      <div className="p-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold ml-1">Danh sách tranh</h2>
+          <h2 className="text-xl font-semibold">Danh sách tranh</h2>
           <Button
-            className="flex items-center mr-4"
+            className="flex items-center"
             onClick={() => router.push("/paintings/add-paintings")}
           >
             <PlusIcon /> Thêm tranh
           </Button>
         </div>
-        <div></div>
         <SearchPaintings
           searchParams={searchingParams}
           categories={categories}
@@ -237,8 +254,31 @@ export default function PaintingsPage() {
                   }
                 />
               </PaginationItem>{" "}
-              {Array.from({ length: data?.totalPages || 1 }, (_, index) => {
-                const pageNumber = index + 1;
+
+              {/* Show first page if not in range */}
+              {getPaginationRange(searchingParams.page ?? 1, data?.totalPages || 1)[0] > 1 && (
+                <>
+                  <PaginationItem>
+                    <PaginationLink
+                      isActive={false}
+                      onClick={() =>
+                        setSearchingParams((prev) => ({
+                          ...prev,
+                          page: 1,
+                        }))
+                      }
+                    >
+                      1
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <span className="px-3 py-2">...</span>
+                  </PaginationItem>
+                </>
+              )}
+
+              {/* Page numbers */}
+              {getPaginationRange(searchingParams.page ?? 1, data?.totalPages || 1).map((pageNumber) => {
                 const isActive = pageNumber === (searchingParams.page ?? 1);
                 return (
                   <PaginationItem key={pageNumber}>
@@ -256,6 +296,29 @@ export default function PaintingsPage() {
                   </PaginationItem>
                 );
               })}
+
+              {/* Show last page if not in range */}
+              {getPaginationRange(searchingParams.page ?? 1, data?.totalPages || 1).slice(-1)[0] < (data?.totalPages || 1) && (
+                <>
+                  <PaginationItem>
+                    <span className="px-3 py-2">...</span>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                      isActive={false}
+                      onClick={() =>
+                        setSearchingParams((prev) => ({
+                          ...prev,
+                          page: data?.totalPages || 1,
+                        }))
+                      }
+                    >
+                      {data?.totalPages || 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                </>
+              )}
+
               <PaginationItem>
                 <PaginationNext
                   onClick={() =>

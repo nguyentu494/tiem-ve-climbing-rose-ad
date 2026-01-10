@@ -30,6 +30,7 @@ import {
 import { sidebarData } from "../../constant/sidebar-menu"
 import Logo from "../../assets/avt.webp"
 import Image from "next/image"
+import { useAuthStore } from "src/store/auth.store"
 
 type MyData = {
   user: { name: string; email: string; avatar: string };
@@ -40,8 +41,17 @@ type MyData = {
 const data = sidebarData;
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuthStore();
+
+  // Prepare user data for NavUser component
+  const userData = {
+    name: user?.username || user?.displayName || "Admin User",
+    email: user?.email || "admin@example.com",
+    avatar: user?.avatar || "/avatars/default.jpg",
+  };
+
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -71,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userData} />
       </SidebarFooter>
     </Sidebar>
   );

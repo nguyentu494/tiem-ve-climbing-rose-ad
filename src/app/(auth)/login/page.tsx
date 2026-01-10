@@ -7,18 +7,17 @@ import { LocalStorage } from "src/lib/local-storage";
 import Lottie from "lottie-react";
 import loadingAnimation from "../../../../public/animation/loading-page.json";
 import { useAuthStore } from "src/store/auth.store";
-import { set } from "zod";
 
 export default function LoginPage() {
   const router = useRouter();
-  const {loading} = useAuthStore();
+  const { loading } = useAuthStore();
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorage.token);
 
     if (token) {
       router.push("/paintings");
-    } 
+    }
   }, [router]);
 
   if (loading) {
