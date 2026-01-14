@@ -60,17 +60,15 @@ api.interceptors.response.use(
 
     const errorResponse: ErrorResponse = error.response.data;
 
-    // if (errorResponse.statusCode === 401) {
-    //   // addToast({
-    //   // 	title: "Phiên đăng nhập đã hết hạn",
-    //   // 	description: "Vui lòng đăng nhập lại",
-    //   // 	color: "danger",
-    //   // });
-    //   warning("Phiên đăng nhập đã hết hạn", "Vui lòng đăng nhập lại");
-    //   localStorage.removeItem(LocalStorage.userId);
-    //   localStorage.removeItem(LocalStorage.token);
-    //   window.location.href = "/login"; 
-    // }
+    if (errorResponse.statusCode === 401) {
+      // Clear authentication data
+      localStorage.removeItem(LocalStorage.userId);
+      localStorage.removeItem(LocalStorage.token);
+      localStorage.removeItem(LocalStorage.ipDevice);
+
+      // Redirect to login page
+      window.location.href = "/login";
+    }
 
     return Promise.reject(errorResponse);
   }
